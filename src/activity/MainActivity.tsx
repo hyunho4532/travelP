@@ -17,13 +17,21 @@ export function MainActivity() {
     });
 
     return (
-        <>
+        <div className={css`
+            width: 1200px;
+            margin: 0 auto;
+        `}>
             <div id="map" className={css`
-                width: 1200px;
-                height: 600px;
-            `}>
+                width: 100%;
+                height: 520px;
+                margin-top: 32px;
+            `} />
 
-            </div>
-        </>
+            <h2 className={css`
+                font-family: 'yg-jalnan';
+                text-align: left;
+                margin-top: 40px;
+            `}>요즘 유행하고 있는 여행 코스 😎</h2>
+        </div>
     )
 }
