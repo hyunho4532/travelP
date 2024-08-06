@@ -1,3 +1,4 @@
+import { css } from "@emotion/css";
 import { useEffect } from "react";
 
 export function MainActivity() {
@@ -17,7 +18,12 @@ export function MainActivity() {
 
     return (
         <>
-            <div id="map" style={{ "width": "500px", "height": "400px" }}></div>
+            <div id="map" className={css`
+                width: 1200px;
+                height: 600px;
+            `}>
+
+            </div>
         </>
     )
 }
