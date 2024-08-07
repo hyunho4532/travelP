@@ -1,9 +1,11 @@
 import { css } from "@emotion/css";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { instance } from "../interceptor";
 import { _type, mobileApp, mobileOS, serviceKey } from "../const";
 
 export function MainActivity() {
+
+    const [travelCourse, setTravelCourse] = useState([]);
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -16,15 +18,16 @@ export function MainActivity() {
 
             new kakao.maps.Map(container!, options);
         }
-
-        instance.get(`/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&_type=${_type}`)
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            })
     });
+    
+    useMemo(async () => {
+        try {
+            const response = await instance.get(`/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&_type=${_type}`);
+            setTravelCourse(response.data.response.body.items.item);
+        } catch (error) {
+            console.error(error);
+        }
+    }, []);
 
     return (
         <div className={css`
@@ -42,6 +45,10 @@ export function MainActivity() {
                 text-align: left;
                 margin-top: 40px;
             `}>요즘 유행하고 있는 여행 코스 😎</h2>
+
+            { travelCourse && travelCourse.map((data: string, index: number) => (
+                <p key={index}>{data.crsKorNm}</p>
+            ))}
         </div>
     )
 }

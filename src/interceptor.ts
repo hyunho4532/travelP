@@ -1,8 +1,7 @@
 import axios from "axios";
 
 export const instance = axios.create({
-    baseURL: "https://apis.data.go.kr/B551011/Durunubi",
-    timeout: 1000
+    baseURL: "https://apis.data.go.kr/B551011/Durunubi"
 })
 
 instance.interceptors.request.use(function (config) {
