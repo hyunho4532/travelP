@@ -1,5 +1,7 @@
 import { css } from "@emotion/css";
 import { useEffect } from "react";
+import { instance } from "../interceptor";
+import { _type, mobileApp, mobileOS, serviceKey } from "../const";
 
 export function MainActivity() {
 
@@ -14,6 +16,14 @@ export function MainActivity() {
 
             new kakao.maps.Map(container!, options);
         }
+
+        instance.get(`/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&_type=${_type}`)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            })
     });
 
     return (
