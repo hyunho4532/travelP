@@ -2,6 +2,9 @@ import { css } from "@emotion/css";
 import { useEffect, useMemo, useState } from "react";
 import { instance } from "../interceptor";
 import { _type, mobileApp, mobileOS, serviceKey } from "../const";
+import { Input } from "@headlessui/react";
+import { Horizontal } from "../ui-kit/styled/Horizontal";
+import { TravelCourseItems } from "../components/items/TravelCourseItems";
 
 export function MainActivity() {
 
@@ -40,11 +43,15 @@ export function MainActivity() {
                 margin-top: 32px;
             `} />
 
-            <h2 className={css`
-                font-family: 'yg-jalnan';
-                text-align: left;
-                margin-top: 40px;
-            `}>요즘 유행하고 있는 여행 코스 😎</h2>
+            <Horizontal>
+                <h2 className={css`
+                    font-family: 'yg-jalnan';
+                    text-align: left;
+                    margin-top: 40px;
+                `}>원하는 여행 코스를 검색하세요! 🤭</h2>
+
+                <TravelCourseItems />
+            </Horizontal>
 
             { travelCourse && travelCourse.map((data: string, index: number) => (
                 <p key={index}>{data.crsKorNm}</p>
