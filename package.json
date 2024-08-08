@@ -11,14 +11,17 @@
   },
   "dependencies": {
     "@emotion/css": "^11.13.0",
+    "@gsap/react": "^2.1.1",
     "@headlessui/react": "^2.1.2",
     "@mui/material": "^5.16.6",
     "axios": "^1.7.3",
     "clsx": "^2.1.1",
+    "gsap": "^3.12.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-kakao-maps-sdk": "^1.1.27",
-    "react-router-dom": "^6.25.1"
+    "react-router-dom": "^6.25.1",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

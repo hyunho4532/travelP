@@ -1,13 +1,13 @@
 import { css } from "@emotion/css";
-import { useEffect, useMemo, useState } from "react";
-import { instance } from "../interceptor";
-import { _type, mobileApp, mobileOS, serviceKey, travelCourseItems } from "../const";
+import { useEffect } from "react";
+import { _type, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
+import { travelStore } from "../entities/travel";
 
 export function MainActivity() {
 
-    const [travelCourse, setTravelCourse] = useState([]);
+    const { items } = travelStore();
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -21,15 +21,8 @@ export function MainActivity() {
             new kakao.maps.Map(container!, options);
         }
     });
-    
-    useMemo(async () => {
-        try {
-            const response = await instance.get(`/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&_type=${_type}`);
-            setTravelCourse(response.data.response.body.items.item);
-        } catch (error) {
-            console.error(error);
-        }
-    }, []);
+
+    console.log(items);
 
     return (
         <div className={css`
@@ -52,7 +45,7 @@ export function MainActivity() {
                 <TravelCourseItems items={travelCourseItems} />
             </Horizontal>
 
-            { travelCourse && travelCourse.map((data: string, index: number) => (
+            { items && items.map((data: any, index: number) => (
                 <p key={index}>{data.crsKorNm}</p>
             ))}
         </div>
