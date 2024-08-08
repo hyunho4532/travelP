@@ -1,8 +1,7 @@
 import { css } from "@emotion/css";
 import { useEffect, useMemo, useState } from "react";
 import { instance } from "../interceptor";
-import { _type, mobileApp, mobileOS, serviceKey } from "../const";
-import { Input } from "@headlessui/react";
+import { _type, mobileApp, mobileOS, serviceKey, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
 
@@ -50,7 +49,7 @@ export function MainActivity() {
                     margin-top: 40px;
                 `}>원하는 여행 코스를 검색하세요! 🤭</h2>
 
-                <TravelCourseItems />
+                <TravelCourseItems items={travelCourseItems} />
             </Horizontal>
 
             { travelCourse && travelCourse.map((data: string, index: number) => (
