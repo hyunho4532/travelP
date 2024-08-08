@@ -1,7 +1,6 @@
 import { css } from "@emotion/css";
 import { ItemsProps } from "./ItemsProps";
 import { travelStore } from "../../entities/travel";
-import { useMemo } from "react";
 import { instance } from "../../interceptor";
 import { _type, crsKorNm, mobileApp, mobileOS, serviceKey } from "../../const";
 
@@ -10,6 +9,7 @@ export function TravelCourseItems(props: ItemsProps) {
     const { setItems } = travelStore();
     
     const travelCourseItemClick = async (key: number) => {
+
         try {
             const response = await instance.get (
                 `/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&crsKorNm=${crsKorNm(key)}&_type=${_type}`

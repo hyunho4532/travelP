@@ -6,6 +6,7 @@ export const crsKorNm = ((key: number) => {
     switch(key) {
         case 1: return "해파랑길"
         case 3: return "남파랑길"
+        case 4: return "서해랑길"
     }
 })
 

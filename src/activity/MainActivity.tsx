@@ -11,6 +11,11 @@ export function MainActivity() {
 
     useEffect(() => {
         const container = document.getElementById('map');
+        const position = new kakao.maps.LatLng(35.804329, 129.502485);
+
+        const marker = new kakao.maps.Marker({
+            position: position
+        })
 
         if (container) {
             const options = {
@@ -18,11 +23,10 @@ export function MainActivity() {
                 level: 3
             };
 
-            new kakao.maps.Map(container!, options);
+            const map = new kakao.maps.Map(container!, options);
+            marker.setMap(map);
         }
     });
-
-    console.log(items);
 
     return (
         <div className={css`
@@ -35,7 +39,7 @@ export function MainActivity() {
                 margin-top: 32px;
             `} />
 
-            <Horizontal>
+            <Horizontal notScroll="yes">
                 <h2 className={css`
                     font-family: 'yg-jalnan';
                     text-align: left;
@@ -45,9 +49,31 @@ export function MainActivity() {
                 <TravelCourseItems items={travelCourseItems} />
             </Horizontal>
 
-            { items && items.map((data: any, index: number) => (
-                <p key={index}>{data.crsKorNm}</p>
-            ))}
+            <div className={css`
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+            `}>
+                { items && items.map((data: any, index: number) => (
+                        <div
+                            key={index}
+                            className={css`
+                                width: 200px;
+                                height: 90px;
+                                box-shadow: 1px 1px 3px 1px #dadce0;
+                                background-color: white;
+                                cursor: pointer;
+                                margin-top: 40px;
+                                margin-left: 14px;
+                                text-align: center;
+                                font-size: 15px;
+                                font-family: Freesentation-9Black;
+                            `}>
+                        <p key={index}>{data.crsKorNm}</p>
+
+                        <p>{data.sigun}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
