@@ -29,20 +29,18 @@ export function MainActivity() {
     });
 
     const clickTest = async () => {
-        const response = await fetch('https://www.durunubi.kr/editImgUp.do?filePath=/data/koreamobility/course/summap/T_CRS_MNG0000004239.gpx', {
-
-        });
+        const response = await fetch('http://localhost:3000/api');
         const xmlText = await response.text();
-        
-        // XML 파싱
+
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlText, "application/xml");
 
-        const trackPoints = xmlDoc.getElementsByTagName('trkpt');
-        for (let i = 0; i < trackPoints.length; i++) {
-            const lat = trackPoints[i].getAttribute('lat');
-            const lon = trackPoints[i].getAttribute('lon');
-            console.log(`Track Point ${i + 1}: Latitude: ${lat}, Longitude: ${lon}`);
+        const trkpt = xmlDoc.getElementsByTagName('trkpt');
+        for (let i = 0; i < trkpt.length; i++) {
+            const lat = trkpt[i].getAttribute('lat');
+            const lon = trkpt[i].getAttribute('lon');
+
+            console.log(lat, lon);
         }
     }
 
