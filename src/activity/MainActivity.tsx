@@ -7,7 +7,7 @@ import { travelStore } from "../entities/travel";
 
 export function MainActivity() {
 
-    const { items } = travelStore();
+    const { items, setMarkers, markersLat } = travelStore();
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -36,11 +36,9 @@ export function MainActivity() {
         const xmlDoc = parser.parseFromString(xmlText, "application/xml");
 
         const trkpt = xmlDoc.getElementsByTagName('trkpt');
-        for (let i = 0; i < trkpt.length; i++) {
-            const lat = trkpt[i].getAttribute('lat');
-            const lon = trkpt[i].getAttribute('lon');
 
-            console.log(lat, lon);
+        for (let i = 0; i < trkpt.length; i++) {
+            setMarkers(trkpt[i].getAttribute('lat'), trkpt[i].getAttribute('lon'));
         }
     }
 
