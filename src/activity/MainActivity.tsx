@@ -4,6 +4,7 @@ import { _type, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
 import { travelStore } from "../entities/travel";
+import { Header } from "../components/header";
 
 export function MainActivity() {
 
@@ -95,53 +96,56 @@ export function MainActivity() {
     }
 
     return (
-        <div className={css`
-            width: 1200px;
-            margin: 0 auto;
-        `}>
-            <div id="map" className={css`
-                width: 100%;
-                height: 520px;
-                margin-top: 32px;
-            `}>
-            </div>
-
-            <Horizontal notScroll="yes">
-                <h2 className={css`
-                    font-family: 'yg-jalnan';
-                    text-align: left;
-                    margin-top: 40px;
-                `}>원하는 여행 코스를 검색하세요! 🤭</h2>
-
-                <TravelCourseItems items={travelCourseItems} />
-            </Horizontal>
-
+        <>
+            <Header />
             <div className={css`
-                display: grid;
-                grid-template-columns: repeat(5, 1fr);
+                width: 1200px;
+                margin: 0 auto;
             `}>
-                { items && items.map((data: any, index: number) => (
-                        <div
-                            key={index}
-                            className={css`
-                                width: 200px;
-                                height: 90px;
-                                box-shadow: 1px 1px 3px 1px #dadce0;
-                                background-color: white;
-                                cursor: pointer;
-                                margin-top: 40px;
-                                margin-left: 14px;
-                                text-align: center;
-                                font-size: 15px;
-                                font-family: Freesentation-9Black;
-                            `}
-                            onClick={() => clickTest(data.gpxpath)}>
-                        <p key={index}>{data.crsKorNm}</p>
+                <div id="map" className={css`
+                    width: 100%;
+                    height: 520px;
+                    margin-top: 32px;
+                `}>
+                </div>
 
-                        <p>{data.sigun}</p>
-                    </div>
-                ))}
+                <Horizontal notScroll="yes">
+                    <h2 className={css`
+                        font-family: 'yg-jalnan';
+                        text-align: left;
+                        margin-top: 40px;
+                    `}>원하는 여행 코스를 검색하세요! 🤭</h2>
+
+                    <TravelCourseItems items={travelCourseItems} />
+                </Horizontal>
+
+                <div className={css`
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                `}>
+                    { items && items.map((data: any, index: number) => (
+                            <div
+                                key={index}
+                                className={css`
+                                    width: 200px;
+                                    height: 90px;
+                                    box-shadow: 1px 1px 3px 1px #dadce0;
+                                    background-color: white;
+                                    cursor: pointer;
+                                    margin-top: 40px;
+                                    margin-left: 14px;
+                                    text-align: center;
+                                    font-size: 15px;
+                                    font-family: Freesentation-9Black;
+                                `}
+                                onClick={() => clickTest(data.gpxpath)}>
+                            <p key={index}>{data.crsKorNm}</p>
+
+                            <p>{data.sigun}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     )
 }
