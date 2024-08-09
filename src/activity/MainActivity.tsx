@@ -80,7 +80,7 @@ export function MainActivity() {
     }, []);
 
     const clickTest = async (gpxpath: string) => {
-        setOpen(true);  // 다이얼로그를 열기 위해 open 상태를 true로 설정합니다.
+        setOpen(true);
 
         const url = new URL('http://localhost:3000/api');
         url.searchParams.append('gpxpath', gpxpath);
