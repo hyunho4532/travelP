@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { _type, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
@@ -22,17 +22,43 @@ export function MainActivity() {
 
             const addMarker = () => {
                 const { markersLat, markersLng } = travelStore.getState();
-
-                markersLat.pop();
-
-                markersLat.forEach((lat, index) => {
-                    const lng = markersLng[index];
-
-                    new kakao.maps.Marker({
-                        position: new kakao.maps.LatLng(lat, lng),
-                        map: map
-                    })
-                })
+            
+                if (markersLat.length !== markersLng.length) {
+                    console.error("Latitude and Longitude arrays do not match in length");
+                    return;
+                }
+            
+                const path = markersLat.map((lat, index) => {
+                    if (lat == null || markersLng[index] == null) {
+                        console.error("Invalid latitude or longitude at index", index);
+                        return null;
+                    }
+                    return new kakao.maps.LatLng(lat, markersLng[index]);
+                }).filter(Boolean);
+            
+                if (path.length === 0) {
+                    console.error("Path array is empty or invalid");
+                    return;
+                }
+            
+                if (!(path[0] instanceof kakao.maps.LatLng)) {
+                    console.error("Invalid LatLng object at path[0]");
+                    return;
+                }
+            
+                const centerCamera = new kakao.maps.LatLng(path[0].getLat(), path[0].getLng());
+            
+                const newPolyline = new kakao.maps.Polyline({
+                    map: map,
+                    path: path,
+                    strokeWeight: 5,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.7,
+                    strokeStyle: 'solid'
+                });
+            
+                newPolyline.setMap(map);
+                map.setCenter(centerCamera);
             }
             
             addMarker();
