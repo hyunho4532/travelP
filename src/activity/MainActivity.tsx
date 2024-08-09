@@ -7,29 +7,44 @@ import { travelStore } from "../entities/travel";
 
 export function MainActivity() {
 
-    const { items, setMarkers, markersLat } = travelStore();
+    const { items, setMarkers } = travelStore();
 
     useEffect(() => {
         const container = document.getElementById('map');
-        const position = new kakao.maps.LatLng(35.804329, 129.502485);
-
-        const marker = new kakao.maps.Marker({
-            position: position
-        })
 
         if (container) {
             const options = {
                 center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3
+                level: 6
             };
 
             const map = new kakao.maps.Map(container!, options);
-            marker.setMap(map);
+
+            const addMarker = () => {
+                const { markersLat, markersLng } = travelStore.getState();
+
+                markersLat.pop();
+
+                markersLat.forEach((lat, index) => {
+                    const lng = markersLng[index];
+
+                    new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(lat, lng),
+                        map: map
+                    })
+                })
+            }
+            
+            addMarker();
         }
     });
 
-    const clickTest = async () => {
-        const response = await fetch('http://localhost:3000/api');
+    const clickTest = async (gpxpath: string) => {
+        const url = new URL('http://localhost:3000/api');
+        url.searchParams.append('gpxpath', gpxpath);
+
+        const response = await fetch(url.toString());
+
         const xmlText = await response.text();
 
         const parser = new DOMParser();
@@ -38,7 +53,7 @@ export function MainActivity() {
         const trkpt = xmlDoc.getElementsByTagName('trkpt');
 
         for (let i = 0; i < trkpt.length; i++) {
-            setMarkers(trkpt[i].getAttribute('lat'), trkpt[i].getAttribute('lon'));
+            setMarkers(parseFloat(trkpt[i].getAttribute('lat')), parseFloat(trkpt[i].getAttribute('lon')));
         }
     }
 
@@ -82,7 +97,7 @@ export function MainActivity() {
                                 font-size: 15px;
                                 font-family: Freesentation-9Black;
                             `}
-                            onClick={() => clickTest()}>
+                            onClick={() => clickTest(data.gpxpath)}>
                         <p key={index}>{data.crsKorNm}</p>
 
                         <p>{data.sigun}</p>

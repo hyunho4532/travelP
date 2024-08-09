@@ -6,7 +6,10 @@ const app = express();
 app.use(cors());
 
 app.get('/api', (req, res) => {
-    const url = 'https://www.durunubi.kr/editImgUp.do?filePath=/data/koreamobility/course/summap/T_CRS_MNG0000004239.gpx';
+    
+    const filepath = req.query.gpxpath;
+
+    const url = filepath;
     request(url)
         .on('response', response => {
             res.setHeader('Access-Control-Allow-Origin', '*');

@@ -4,9 +4,9 @@ export type Travel = {
     items: string[],
     setItems: (newItems: string[]) => void,
 
-    markersLat: string[],
-    markersLng: string[],
-    setMarkers: (newLat: string, newLng: string) => void
+    markersLat: number[],
+    markersLng: number[],
+    setMarkers: (newLat: number, newLng: number) => void
 }
 
 export const travelStore = create<Travel>((set) => ({
@@ -15,7 +15,7 @@ export const travelStore = create<Travel>((set) => ({
     
     markersLat: [],
     markersLng: [],
-    setMarkers: (newLat: string, newLng: string) => set((state) => ({
+    setMarkers: (newLat: number, newLng: number) => set((state) => ({
         markersLat: [...state.markersLat, newLat],
         markersLng: [...state.markersLng, newLng]
     }))
