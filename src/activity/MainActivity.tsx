@@ -28,6 +28,24 @@ export function MainActivity() {
         }
     });
 
+    const clickTest = async () => {
+        const response = await fetch('https://www.durunubi.kr/editImgUp.do?filePath=/data/koreamobility/course/summap/T_CRS_MNG0000004239.gpx', {
+
+        });
+        const xmlText = await response.text();
+        
+        // XML 파싱
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+
+        const trackPoints = xmlDoc.getElementsByTagName('trkpt');
+        for (let i = 0; i < trackPoints.length; i++) {
+            const lat = trackPoints[i].getAttribute('lat');
+            const lon = trackPoints[i].getAttribute('lon');
+            console.log(`Track Point ${i + 1}: Latitude: ${lat}, Longitude: ${lon}`);
+        }
+    }
+
     return (
         <div className={css`
             width: 1200px;
@@ -67,7 +85,8 @@ export function MainActivity() {
                                 text-align: center;
                                 font-size: 15px;
                                 font-family: Freesentation-9Black;
-                            `}>
+                            `}
+                            onClick={() => clickTest()}>
                         <p key={index}>{data.crsKorNm}</p>
 
                         <p>{data.sigun}</p>

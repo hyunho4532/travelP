@@ -9,12 +9,12 @@ export function TravelCourseItems(props: ItemsProps) {
     const { setItems } = travelStore();
     
     const travelCourseItemClick = async (key: number) => {
-
         try {
             const response = await instance.get (
                 `/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&crsKorNm=${crsKorNm(key)}&_type=${_type}`
             );
             setItems(response.data.response.body.items.item);
+
         } catch (error) {
             console.error(error);
         }
