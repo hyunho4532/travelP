@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { _type, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
@@ -35,30 +35,41 @@ export function MainActivity() {
                     }
                     return new kakao.maps.LatLng(lat, markersLng[index]);
                 }).filter(Boolean);
+
+                const lastIndex = path.length - 1;
             
-                if (path.length === 0) {
-                    console.error("Path array is empty or invalid");
-                    return;
-                }
-            
-                if (!(path[0] instanceof kakao.maps.LatLng)) {
+                if (!(path[0] instanceof kakao.maps.LatLng) || !(path[lastIndex] instanceof kakao.maps.LatLng)) {
                     console.error("Invalid LatLng object at path[0]");
                     return;
                 }
             
-                const centerCamera = new kakao.maps.LatLng(path[0].getLat(), path[0].getLng());
+                const startPosition = new kakao.maps.LatLng(path[0].getLat(), path[0].getLng());
+
+                const alivePosition = new kakao.maps.LatLng(path[lastIndex].getLat(), path[lastIndex].getLng());
             
                 const newPolyline = new kakao.maps.Polyline({
                     map: map,
                     path: path,
-                    strokeWeight: 5,
-                    strokeColor: '#FF0000',
+                    strokeWeight: 6,
+                    strokeColor: '#0080ff',
                     strokeOpacity: 0.7,
                     strokeStyle: 'solid'
                 });
+
+                const startMarker = new kakao.maps.Marker({
+                    position: startPosition,
+                    map: map
+                })
+
+                const aliveMarker = new kakao.maps.Marker({
+                    position: alivePosition,
+                    map: map
+                })
             
                 newPolyline.setMap(map);
-                map.setCenter(centerCamera);
+                map.setCenter(startPosition);
+                startMarker.setMap(map);
+                aliveMarker.setMap(map);
             }
             
             addMarker();
@@ -92,7 +103,8 @@ export function MainActivity() {
                 width: 100%;
                 height: 520px;
                 margin-top: 32px;
-            `} />
+            `}>
+            </div>
 
             <Horizontal notScroll="yes">
                 <h2 className={css`
