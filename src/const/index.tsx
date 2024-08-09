@@ -10,6 +10,29 @@ export const crsKorNm = ((key: number) => {
     }
 })
 
+export const categoryHeaderItems = [
+    {
+        key: 1,
+        title: "커뮤니티"
+    },
+    {
+        key: 2,
+        title: "관광"
+    },
+    {
+        key: 3,
+        title: "여행 코스"
+    },
+    {
+        key: 4,
+        title: "로그인"
+    },
+    {
+        key: 5,
+        title: "회원가입"
+    }
+]
+
 export const travelCourseItems = [
     {
         key: 1,
