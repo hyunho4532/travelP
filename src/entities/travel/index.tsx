@@ -6,7 +6,10 @@ export type Travel = {
 
     markersLat: number[],
     markersLng: number[],
-    setMarkers: (newLat: number, newLng: number) => void
+    setMarkers: (newLat: number, newLng: number) => void,
+
+    gpxPath: string,
+    setGpxPath: (newPath: string) => void
 }
 
 export const travelStore = create<Travel>((set) => ({
@@ -18,5 +21,8 @@ export const travelStore = create<Travel>((set) => ({
     setMarkers: (newLat: number, newLng: number) => set((state) => ({
         markersLat: [...state.markersLat, newLat],
         markersLng: [...state.markersLng, newLng]
-    }))
+    })),
+
+    gpxPath: '',
+    setGpxPath: (newPath: string) => set({ gpxPath: newPath })
 }));

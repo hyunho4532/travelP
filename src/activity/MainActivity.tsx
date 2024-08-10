@@ -9,7 +9,7 @@ import { stateStore } from "../entities/state";
 import { InitDialog } from "../components/dialog";
 
 export function MainActivity() {
-    const { items, setMarkers } = travelStore();
+    const { items, setGpxPath } = travelStore();
     const { open, setOpen } = stateStore();
 
     useEffect(() => {
@@ -70,32 +70,18 @@ export function MainActivity() {
                 });
 
                 newPolyline.setMap(map);
-                map.setCenter(startPosition);
                 startMarker.setMap(map);
+                map.setCenter(startPosition);
                 aliveMarker.setMap(map);
             };
 
-            addMarker();
+            kakao.maps.event.addListener(map, 'tilesloaded', addMarker);
         }
-    }, []);
+    }, [travelStore.getState()]);
 
-    const clickTest = async (gpxpath: string) => {
+    const setState = (gpxpath: string) => {
         setOpen(true);
-
-        const url = new URL('http://localhost:3000/api');
-        url.searchParams.append('gpxpath', gpxpath);
-
-        const response = await fetch(url.toString());
-        const xmlText = await response.text();
-
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-
-        const trkpt = xmlDoc.getElementsByTagName('trkpt');
-
-        for (let i = 0; i < trkpt.length; i++) {
-            setMarkers(parseFloat(trkpt[i].getAttribute('lat')), parseFloat(trkpt[i].getAttribute('lon')));
-        }
+        setGpxPath(gpxpath);
     };
 
     return (
@@ -141,7 +127,7 @@ export function MainActivity() {
                                 font-size: 15px;
                                 font-family: Freesentation-9Black;
                             `}
-                            onClick={() => clickTest(data.gpxpath)}>
+                            onClick={() => setState(data.gpxpath)}>
                             <p key={index}>{data.crsKorNm}</p>
                             <p>{data.sigun}</p>
                         </div>
