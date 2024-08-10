@@ -7,6 +7,7 @@ import { travelStore } from "../entities/travel";
 import { Header } from "../components/header";
 import { stateStore } from "../entities/state";
 import { InitDialog } from "../components/dialog";
+import { Markers } from "../hooks/marker";
 
 export function MainActivity() {
     const { items, setGpxPath } = travelStore();
@@ -59,20 +60,12 @@ export function MainActivity() {
                     strokeStyle: 'solid'
                 });
 
-                const startMarker = new kakao.maps.Marker({
-                    position: startPosition,
-                    map: map
-                });
+                const positionArray = [startPosition, alivePosition]
 
-                const aliveMarker = new kakao.maps.Marker({
-                    position: alivePosition,
-                    map: map
-                });
+                Markers(positionArray, map);
 
                 newPolyline.setMap(map);
-                startMarker.setMap(map);
                 map.setCenter(startPosition);
-                aliveMarker.setMap(map);
             };
 
             kakao.maps.event.addListener(map, 'tilesloaded', addMarker);
@@ -138,6 +131,7 @@ export function MainActivity() {
                     height: 40px;
                     margin-top: 24px;
                     padding-left: 8px;
+                    border-radius: 12px;
                 `} onChange={(level) => onChange(level, "난이도")}>
                     { level.map((data: any, index: number) => (
                         <option key={index} value={data}>{data}</option>
@@ -150,6 +144,7 @@ export function MainActivity() {
                     padding-left: 8px;
                     margin-top: 24px;
                     margin-left: 16px;
+                    border-radius: 12px;
                 `} onChange={(load) => onChange(load, "길")}>
                     { load.map((data: any, index: number) => (
                         <option key={index}>{data}</option>

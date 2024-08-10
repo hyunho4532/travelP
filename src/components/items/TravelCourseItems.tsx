@@ -10,17 +10,13 @@ export function TravelCourseItems(props: ItemsProps) {
     const { setItems } = travelStore();
     const { level, load } = stateStore();
 
-    console.log(load);
-
     const travelCourseItemClick = async (key: number) => {
         try {
             let baseUrl = `/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&crsKorNm=${crsKorNm(key)}&_type=${_type}`;
 
             if (level != 0) {
                 baseUrl += `&crsLevel=${level}`;
-            }
-
-            if (load != null) {
+            } else if (load != null) {
                 baseUrl += `&brdDiv=${load}`;
             }
 
