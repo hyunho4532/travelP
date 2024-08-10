@@ -5,14 +5,16 @@ import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
 import { travelStore } from "../entities/travel";
 import { Header } from "../components/header";
-import { stateStore } from "../entities/state";
-import { InitDialog } from "../components/dialog";
+import { openStore, stateStore } from "../entities/state";
+import { InitDialog } from "../components/dialog/InfoDialog";
 import { Markers } from "../hooks/marker";
 import { Polyline } from "../hooks/polyline";
+import { LoginDialog } from "../components/dialog/LoginDialog";
 
 export function MainActivity() {
     const { items, setGpxPath } = travelStore();
-    const { open, setOpen, setLevel, setLoad } = stateStore();
+    const { setLevel, setLoad } = stateStore();
+    const { travelCourseOpen, setTravelCourseOpen, loginOpen } = openStore();
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -68,7 +70,7 @@ export function MainActivity() {
     }, [travelStore.getState()]);
 
     const setState = (gpxpath: string) => {
-        setOpen(true);
+        setTravelCourseOpen(true);
         setGpxPath(gpxpath);
     }; 
 
@@ -96,6 +98,8 @@ export function MainActivity() {
             setLoad(values!);
         }
     };
+
+    console.log(loginOpen);
 
     return (
         <>
@@ -173,7 +177,9 @@ export function MainActivity() {
                 </div>
             </div>
 
-            {open && <InitDialog open={open} setOpen={setOpen} />}
+            { travelCourseOpen && <InitDialog open={travelCourseOpen} setOpen={setTravelCourseOpen} /> }
+
+            { loginOpen && <LoginDialog open={loginOpen} /> }
         </>
     );
 }
