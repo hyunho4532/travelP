@@ -3,16 +3,29 @@ import { ItemsProps } from "./ItemsProps";
 import { travelStore } from "../../entities/travel";
 import { instance } from "../../interceptor";
 import { _type, crsKorNm, mobileApp, mobileOS, serviceKey } from "../../const";
+import { stateStore } from "../../entities/state";
 
 export function TravelCourseItems(props: ItemsProps) {
 
     const { setItems } = travelStore();
-    
+    const { level, load } = stateStore();
+
+    console.log(load);
+
     const travelCourseItemClick = async (key: number) => {
         try {
-            const response = await instance.get (
-                `/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&crsKorNm=${crsKorNm(key)}&_type=${_type}`
-            );
+            let baseUrl = `/courseList?MobileOS=${mobileOS}&MobileApp=${mobileApp}&serviceKey=${serviceKey}&crsKorNm=${crsKorNm(key)}&_type=${_type}`;
+
+            if (level != 0) {
+                baseUrl += `&crsLevel=${level}`;
+            }
+
+            if (load != null) {
+                baseUrl += `&brdDiv=${load}`;
+            }
+
+            const response = await instance.get(baseUrl);
+
             setItems(response.data.response.body.items.item);
 
         } catch (error) {

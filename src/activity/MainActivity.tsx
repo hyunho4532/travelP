@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { _type, level, load, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
@@ -10,7 +10,7 @@ import { InitDialog } from "../components/dialog";
 
 export function MainActivity() {
     const { items, setGpxPath } = travelStore();
-    const { open, setOpen } = stateStore();
+    const { open, setOpen, setLevel, setLoad } = stateStore();
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -82,6 +82,31 @@ export function MainActivity() {
     const setState = (gpxpath: string) => {
         setOpen(true);
         setGpxPath(gpxpath);
+    }; 
+
+    const onChange = (event: ChangeEvent<HTMLSelectElement>, key: string) => {
+
+        if (key === "난이도") {
+            const values = (() => {
+                switch(event.target.value) {
+                    case "하": return 1
+                    case "중": return 2
+                    case "상": return 3
+                }
+            })();
+
+            setLevel(values!);
+        }
+        else if (key === "길") {
+            const values = (() => {
+                switch(event.target.value) {
+                    case "걷기"  : return "DNWW"
+                    case "자전거": return "DNBW" 
+                }
+            })();
+
+            setLoad(values!);
+        }
     };
 
     return (
@@ -113,10 +138,9 @@ export function MainActivity() {
                     height: 40px;
                     margin-top: 24px;
                     padding-left: 8px;
-                `}>
+                `} onChange={(level) => onChange(level, "난이도")}>
                     { level.map((data: any, index: number) => (
-                        <option key={index}
-                                >{data}</option>
+                        <option key={index} value={data}>{data}</option>
                     ))}
                 </select>
 
@@ -126,7 +150,7 @@ export function MainActivity() {
                     padding-left: 8px;
                     margin-top: 24px;
                     margin-left: 16px;
-                `}>
+                `} onChange={(load) => onChange(load, "길")}>
                     { load.map((data: any, index: number) => (
                         <option key={index}>{data}</option>
                     ))}

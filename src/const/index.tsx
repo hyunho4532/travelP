@@ -17,8 +17,8 @@ export const level = [
 ]
 
 export const load = [
-    "자전거 길",
-    "걷기 길"
+    "자전거",
+    "걷기"
 ]
 
 export const categoryHeaderItems = [
