@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import { useEffect } from "react";
-import { _type, travelCourseItems } from "../const";
+import { _type, level, load, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
 import { travelStore } from "../entities/travel";
@@ -107,6 +107,30 @@ export function MainActivity() {
 
                     <TravelCourseItems items={travelCourseItems} />
                 </Horizontal>
+
+                <select className={css`
+                    width: 360px;
+                    height: 40px;
+                    margin-top: 24px;
+                    padding-left: 8px;
+                `}>
+                    { level.map((data: any, index: number) => (
+                        <option key={index}
+                                >{data}</option>
+                    ))}
+                </select>
+
+                <select className={css`
+                    width: 360px;
+                    height: 40px;
+                    padding-left: 8px;
+                    margin-top: 24px;
+                    margin-left: 16px;
+                `}>
+                    { load.map((data: any, index: number) => (
+                        <option key={index}>{data}</option>
+                    ))}
+                </select>
 
                 <div className={css`
                     display: grid;
