@@ -4,11 +4,12 @@ export function Markers (
 ) {
 
     positions.forEach(position => {
+
         const marker = new kakao.maps.Marker({
             position: position,
             map: map
         });
 
-        return marker.setMap(map);
+        return marker.setMap(map)
     });
 }

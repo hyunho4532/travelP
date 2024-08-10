@@ -8,6 +8,7 @@ import { Header } from "../components/header";
 import { stateStore } from "../entities/state";
 import { InitDialog } from "../components/dialog";
 import { Markers } from "../hooks/marker";
+import { Polyline } from "../hooks/polyline";
 
 export function MainActivity() {
     const { items, setGpxPath } = travelStore();
@@ -49,18 +50,12 @@ export function MainActivity() {
 
                 const startPosition = new kakao.maps.LatLng(path[0].getLat(), path[0].getLng());
 
-                const alivePosition = new kakao.maps.LatLng(path[lastIndex].getLat(), path[lastIndex].getLng());
+                const newPolyline = Polyline(map, path);
 
-                const newPolyline = new kakao.maps.Polyline({
-                    map: map,
-                    path: path,
-                    strokeWeight: 6,
-                    strokeColor: '#0080ff',
-                    strokeOpacity: 0.7,
-                    strokeStyle: 'solid'
-                });
-
-                const positionArray = [startPosition, alivePosition]
+                const positionArray = [
+                    startPosition, 
+                    new kakao.maps.LatLng(path[lastIndex].getLat(), path[lastIndex].getLng())
+                ];
 
                 Markers(positionArray, map);
 
