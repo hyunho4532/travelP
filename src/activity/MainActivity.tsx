@@ -1,16 +1,18 @@
 import { css } from "@emotion/css";
-import { useEffect } from "react";
-import { _type, travelCourseItems } from "../const";
+import { ChangeEvent, useEffect } from "react";
+import { _type, level, load, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
 import { travelStore } from "../entities/travel";
 import { Header } from "../components/header";
 import { stateStore } from "../entities/state";
 import { InitDialog } from "../components/dialog";
+import { Markers } from "../hooks/marker";
+import { Polyline } from "../hooks/polyline";
 
 export function MainActivity() {
     const { items, setGpxPath } = travelStore();
-    const { open, setOpen } = stateStore();
+    const { open, setOpen, setLevel, setLoad } = stateStore();
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -48,31 +50,17 @@ export function MainActivity() {
 
                 const startPosition = new kakao.maps.LatLng(path[0].getLat(), path[0].getLng());
 
-                const alivePosition = new kakao.maps.LatLng(path[lastIndex].getLat(), path[lastIndex].getLng());
+                const newPolyline = Polyline(map, path);
 
-                const newPolyline = new kakao.maps.Polyline({
-                    map: map,
-                    path: path,
-                    strokeWeight: 6,
-                    strokeColor: '#0080ff',
-                    strokeOpacity: 0.7,
-                    strokeStyle: 'solid'
-                });
+                const positionArray = [
+                    startPosition, 
+                    new kakao.maps.LatLng(path[lastIndex].getLat(), path[lastIndex].getLng())
+                ];
 
-                const startMarker = new kakao.maps.Marker({
-                    position: startPosition,
-                    map: map
-                });
-
-                const aliveMarker = new kakao.maps.Marker({
-                    position: alivePosition,
-                    map: map
-                });
+                Markers(positionArray, map);
 
                 newPolyline.setMap(map);
-                startMarker.setMap(map);
                 map.setCenter(startPosition);
-                aliveMarker.setMap(map);
             };
 
             kakao.maps.event.addListener(map, 'tilesloaded', addMarker);
@@ -82,6 +70,31 @@ export function MainActivity() {
     const setState = (gpxpath: string) => {
         setOpen(true);
         setGpxPath(gpxpath);
+    }; 
+
+    const onChange = (event: ChangeEvent<HTMLSelectElement>, key: string) => {
+
+        if (key === "난이도") {
+            const values = (() => {
+                switch(event.target.value) {
+                    case "하": return 1
+                    case "중": return 2
+                    case "상": return 3
+                }
+            })();
+
+            setLevel(values!);
+        }
+        else if (key === "길") {
+            const values = (() => {
+                switch(event.target.value) {
+                    case "걷기"  : return "DNWW"
+                    case "자전거": return "DNBW" 
+                }
+            })();
+
+            setLoad(values!);
+        }
     };
 
     return (
@@ -107,6 +120,31 @@ export function MainActivity() {
 
                     <TravelCourseItems items={travelCourseItems} />
                 </Horizontal>
+
+                <select className={css`
+                    width: 360px;
+                    height: 40px;
+                    margin-top: 24px;
+                    padding-left: 8px;
+                    border-radius: 12px;
+                `} onChange={(level) => onChange(level, "난이도")}>
+                    { level.map((data: any, index: number) => (
+                        <option key={index} value={data}>{data}</option>
+                    ))}
+                </select>
+
+                <select className={css`
+                    width: 360px;
+                    height: 40px;
+                    padding-left: 8px;
+                    margin-top: 24px;
+                    margin-left: 16px;
+                    border-radius: 12px;
+                `} onChange={(load) => onChange(load, "길")}>
+                    { load.map((data: any, index: number) => (
+                        <option key={index}>{data}</option>
+                    ))}
+                </select>
 
                 <div className={css`
                     display: grid;

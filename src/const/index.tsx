@@ -8,7 +8,18 @@ export const crsKorNm = ((key: number) => {
         case 3: return "남파랑길"
         case 4: return "서해랑길"
     }
-})
+});
+
+export const level = [
+    "하",
+    "중",
+    "상"
+]
+
+export const load = [
+    "자전거",
+    "걷기"
+]
 
 export const categoryHeaderItems = [
     {
