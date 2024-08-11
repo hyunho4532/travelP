@@ -140,13 +140,15 @@ export function TourActivity() {
                         margin-top: 24px; 
                     `}>
                         <button className={css`
-                            margin-right: 16px;    
+                            margin-right: 16px;
+                            visibility: ${currentPage <= 1 ? 'hidden' : 'visible' };   
                         `} onClick={() => onPageClick(currentPage - 1)}>이전</button>
 
                         <p>{currentPage}</p>
 
                         <button className={css`
                             margin-left: 16px;    
+                            visibility: ${items.length ===   currentPage ? 'hidden' : 'visible'}
                         `} onClick={() => onPageClick(currentPage + 1)}>다음</button>
                     </div>
                 </div>
