@@ -11,11 +11,13 @@ import { Markers } from "../hooks/marker";
 import { Polyline } from "../hooks/polyline";
 import { LoginDialog } from "../components/dialog/LoginDialog";
 import { supabase } from "../config";
+import { userStore } from "../entities/user";
 
 export function MainActivity() {
     const { items, setGpxPath } = travelStore();
     const { setLevel, setLoad } = stateStore();
     const { travelCourseOpen, setTravelCourseOpen, loginOpen } = openStore();
+    const { email, setEmail } = userStore(); 
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -75,10 +77,11 @@ export function MainActivity() {
         supabase.auth.getUser()
             .then(response => {
                 if (response.data.user?.email != '') {
-                    alert("로그인을 진행 후 이용해주세요.");
+                    const email = response.data.user?.email;
+                    setEmail(email!);
                 }
             })
-    }, [])
+    }, []);
 
     const setState = (gpxpath: string) => {
         setTravelCourseOpen(true);
@@ -112,7 +115,7 @@ export function MainActivity() {
 
     return (
         <>
-            <Header />
+            <Header email={email} />
             <div className={css`
                 width: 1200px;
                 margin: 0 auto;

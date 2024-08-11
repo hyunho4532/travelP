@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import { categoryHeaderItems } from "../../const";
 import { openStore } from "../../entities/state";
 
-export function Header() {
+export function Header({ email }: any) {
 
     const { setLoginOpen } = openStore();
 
@@ -36,6 +36,9 @@ export function Header() {
                     justify-content: end;
                     align-items: center;
                 `}>
+
+                    <p>{email}</p>
+
                     { categoryHeaderItems.map((data: any, key: number) => (
                         <p key={key}
                            className={css`
