@@ -1,18 +1,25 @@
 import { css } from "@emotion/css";
 import { Header } from "../components/header";
 import { userStore } from "../entities/user";
-import { ChangeEvent, useEffect, useMemo } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { setInterceptors } from "../interceptor";
 import { tourSpotStore } from "../entities/travel";
 import { contentType, keywords, serviceKey } from "../const";
+import { Pagination } from "flowbite-react";
 
 export function TourActivity() {
 
     const { items, spot, _contentType, setItems, setSpot, setContentType } = tourSpotStore();
     const { email } = userStore();
+    const [currentPage, setCurrentPage] = useState(1);
 
     const tourSpotSelect = (spot: ChangeEvent<HTMLSelectElement>) => {
         setSpot(spot.target.value);
+    }
+
+    const onPageClick = async (page: number) => {
+        setCurrentPage(page);
+        await fetchTourSpots(page);
     }
 
     const tourContentTypeSelect = (contentType: ChangeEvent<HTMLSelectElement>) => {
@@ -32,12 +39,13 @@ export function TourActivity() {
         setContentType(values!); 
     }
 
-    const fetchTourSpots = async () => {
+    const fetchTourSpots = async (page: number = 1) => {
         try {
-            const baseUrl = `/searchKeyword1?serviceKey=${serviceKey}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&keyword=${spot}&contentTypeId=${_contentType != 0 ? _contentType : 12}`;
+            const baseUrl = `/searchKeyword1?serviceKey=${serviceKey}&numOfRows=10&pageNo=${page}&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&keyword=${spot}&contentTypeId=${_contentType != 0 ? _contentType : 12}`;
 
             const response = await setInterceptors(2).get(baseUrl);
             setItems(response.data.response.body.items.item);
+
         } catch (error) {
             console.error(error);
         }
@@ -98,7 +106,7 @@ export function TourActivity() {
                             margin-left: 16px;
                             box-shadow: 1px 1px 3px 1px #dadce0;
                             font-weight: bold;
-                        `} onClick={fetchTourSpots}>
+                        `} onClick={() => fetchTourSpots(currentPage)}>
                             조회하기
                         </button>
 
@@ -109,7 +117,7 @@ export function TourActivity() {
                         grid-template-columns: repeat(5, 1fr); 
                     `}>
                         { items && items.map((data: any, key: number) => (
-                            <div className={css`
+                            <div key={key} className={css`
                                 width: 212px;
                                 height: 240px;
                                 box-shadow: 1px 1px 3px 1px #dadce0;
@@ -120,10 +128,26 @@ export function TourActivity() {
                                 text-align: center;
                                 font-family: Freesentation-9Black;
                             `}>
-                                <p>{data.title}</p>
+                                <p>{data.title.length >= 13 ? `${data.title.substring(0, 13)}...` : data.title }</p>
                                 <img src={data.firstimage != "" ? data.firstimage : '../src/assets/not_image.png'} width={180} height={160} />
                             </div>
                         ))}
+                    </div>
+
+                    <div className={css`
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 24px; 
+                    `}>
+                        <button className={css`
+                            margin-right: 16px;    
+                        `} onClick={() => onPageClick(currentPage - 1)}>이전</button>
+
+                        <p>{currentPage}</p>
+
+                        <button className={css`
+                            margin-left: 16px;    
+                        `} onClick={() => onPageClick(currentPage + 1)}>다음</button>
                     </div>
                 </div>
             </div>
