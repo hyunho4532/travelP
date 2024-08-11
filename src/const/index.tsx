@@ -1,7 +1,7 @@
 /** Tour API 관련 세팅 */
 export const mobileOS   = "ETC";
 export const mobileApp  = "TravelP";
-export const serviceKey = "8w73g9mtr8i4MSa17m1VKOHx1mwAfdI6I02fY4%2B20MRkjofqKnNx%2FsHIW4567EUyAfi%2FSri8LZdSbCrQPe2rqQ%3D%3D"
+export const serviceKey = "ESun5Z0R0NacQfzLb0UEPB7j8XxI7tACyhwpT80fp%2FpDXspB2JKUjsrZh6DWJmSJvTlL9vKPkbJInjZtVHUXVw%3D%3D"
 export const _type      = "json";
 
 export const crsKorNm = ((key: number) => {
@@ -26,6 +26,68 @@ export const load = [
 export const login = [
     "src/assets/kakao.png",
     "src/assets/google.png"
+]
+
+export const keywords = [
+    {
+        key: 1,
+        title: "서울"
+    },
+    {
+        key: 2,
+        title: "강원"
+    },
+    {
+        key: 3,
+        title: "경기"
+    },
+    {
+        key: 4,
+        title: "충청"
+    },
+    {
+        key: 5,
+        title: "경상"
+    },
+    {
+        key: 6,
+        title: "전라"
+    }
+]
+
+export const contentType = [
+    {
+        key: 1,
+        title: "관광지"
+    },
+    {
+        key: 2,
+        title: "문화시설"
+    },
+    {
+        key: 3,
+        title: "축제공연행사"
+    },
+    {
+        key: 4,
+        title: "여행코스"
+    },
+    {
+        key: 5,
+        title: "레포츠"
+    },
+    {
+        key: 6,
+        title: "숙박"
+    },
+    {
+        key: 7,
+        title: "쇼핑"
+    },
+    {
+        key: 8,
+        title: "음식점"
+    }
 ]
 
 export const categoryHeaderItems = [

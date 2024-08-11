@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 
 export const setInterceptors = (type: number): AxiosInstance => {
     const instance = axios.create({
-        baseURL: type === 1 ? "https://apis.data.go.kr/B551011/Durunubi" : "https://apis.data.go.kr/B551011/KorService1/searchKeyword1"
+        baseURL: type === 1 ? "https://apis.data.go.kr/B551011/Durunubi" : "https://apis.data.go.kr/B551011/KorService1"
     })
     
     instance.interceptors.request.use(function (config) {

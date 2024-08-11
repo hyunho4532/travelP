@@ -12,6 +12,16 @@ export type Travel = {
     setGpxPath: (newPath: string) => void
 }
 
+export type TourSpot = {
+    items: string[],
+    spot: string,
+    _contentType: number,
+
+    setItems: (newItems: string[]) => void
+    setSpot: (newSpot: string) => void
+    setContentType: (newContentType: number) => void
+}
+
 export const travelStore = create<Travel>((set) => ({
     items: [],
     setItems: (newItems: string[]) => set({ items: newItems }),
@@ -25,4 +35,15 @@ export const travelStore = create<Travel>((set) => ({
 
     gpxPath: '',
     setGpxPath: (newPath: string) => set({ gpxPath: newPath })
+}));
+
+export const tourSpotStore = create<TourSpot>((set) => ({
+    items: [],
+    setItems: (newItems: string[]) => set({ items: newItems }),
+
+    spot: '',
+    setSpot: (newSpot: string) => set({ spot: newSpot }),
+
+    _contentType: 0,
+    setContentType: (newContentType: number) => set({ _contentType: newContentType })
 }));
