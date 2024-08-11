@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import request from 'request';
-import { clientId, redirectUrl } from './config.js';
 
 const app = express();
 app.use(cors());

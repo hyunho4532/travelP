@@ -148,7 +148,7 @@ export function TourActivity() {
 
                         <button className={css`
                             margin-left: 16px;    
-                            visibility: ${items.length ===   currentPage ? 'hidden' : 'visible'}
+                            visibility: ${items.length <= 9 ? 'hidden' : 'visible'}
                         `} onClick={() => onPageClick(currentPage + 1)}>다음</button>
                     </div>
                 </div>
