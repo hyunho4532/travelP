@@ -1,15 +1,22 @@
 import { css } from "@emotion/css";
 import { categoryHeaderItems } from "../../const";
 import { openStore } from "../../entities/state";
+import { useNavigate } from "react-router-dom";
 
 export function Header({ email }: any) {
 
     const { setLoginOpen } = openStore();
+    const navigate = useNavigate();
 
     const headerItemClick = (key: number) => {
         switch (key) {
-            case 3: {
+            case 0: {
+                navigate("/introduce")
+                break;
+            }
+            case 4: {
                 setLoginOpen(true);
+                break;
             }
         }
     }
