@@ -14,6 +14,14 @@ export function Header({ email }: any) {
                 navigate("/introduce")
                 break;
             }
+            case 2: {
+                navigate("/tour")
+                break;
+            }
+            case 3: {
+                navigate("/course")
+                break;
+            }
             case 4: {
                 setLoginOpen(true);
                 break;
