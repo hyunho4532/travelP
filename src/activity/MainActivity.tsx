@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useMemo } from "react";
 import { _type, level, load, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
@@ -10,6 +10,7 @@ import { InitDialog } from "../components/dialog/InfoDialog";
 import { Markers } from "../hooks/marker";
 import { Polyline } from "../hooks/polyline";
 import { LoginDialog } from "../components/dialog/LoginDialog";
+import { supabase } from "../config";
 
 export function MainActivity() {
     const { items, setGpxPath } = travelStore();
@@ -67,7 +68,17 @@ export function MainActivity() {
 
             kakao.maps.event.addListener(map, 'tilesloaded', addMarker);
         }
+
     }, [travelStore.getState()]);
+
+    useMemo(() => {
+        supabase.auth.getUser()
+            .then(response => {
+                if (response.data.user?.email != '') {
+                    alert("로그인을 진행 후 이용해주세요.");
+                }
+            })
+    }, [])
 
     const setState = (gpxpath: string) => {
         setTravelCourseOpen(true);
@@ -98,8 +109,6 @@ export function MainActivity() {
             setLoad(values!);
         }
     };
-
-    console.log(loginOpen);
 
     return (
         <>
