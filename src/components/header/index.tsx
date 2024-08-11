@@ -1,7 +1,19 @@
 import { css } from "@emotion/css";
 import { categoryHeaderItems } from "../../const";
+import { openStore } from "../../entities/state";
 
-export function Header() {
+export function Header({ email }: any) {
+
+    const { setLoginOpen } = openStore();
+
+    const headerItemClick = (key: number) => {
+        switch (key) {
+            case 3: {
+                setLoginOpen(true);
+            }
+        }
+    }
+
     return (
         <header className={css`
             width: 1200px;
@@ -29,7 +41,13 @@ export function Header() {
                            className={css`
                                 padding-left: 24px;
                                 font-family: 'yg-jalnan';
-                        `}>{data.title}</p>
+                                cursor: pointer;
+                        `} 
+                        onClick={() => headerItemClick(key)}>
+                            { key != 4 && data.title != "로그인"
+                                ? data.title : email != null 
+                                ? email : data.title }
+                        </p>
                     ))}
                 </div>
             </div>

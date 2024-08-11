@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import request from 'request';
+import { clientId, redirectUrl } from './config.js';
 
 const app = express();
 app.use(cors());
@@ -19,7 +20,6 @@ app.get('/api', (req, res) => {
         })
         .pipe(res);
 });
-
 
 app.listen(3000, () => {
     console.log("서버 실행");

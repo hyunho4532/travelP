@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { travelStore } from "../../entities/travel";
 
 export function InitDialog({ open, setOpen }: any) {
@@ -7,11 +7,15 @@ export function InitDialog({ open, setOpen }: any) {
     const { gpxPath, setMarkers } = travelStore();
     const dialogRef = useRef<HTMLDialogElement>(null);
 
-    const dialog = dialogRef.current;
+    useEffect(() => {
+        const dialog = dialogRef.current;
 
-    if (open) {
-        dialog?.showModal();
-    }
+        if (open) {
+            dialog?.showModal();
+        } else {
+            dialog?.close();
+        }
+    }, [open])
 
     const dialogInsert = async () => {
         const url = new URL('http://localhost:3000/api');
@@ -25,8 +29,6 @@ export function InitDialog({ open, setOpen }: any) {
 
         const trkpt = xmlDoc.getElementsByTagName('trkpt');
 
-        console.log(trkpt);
-
         for (let i = 0; i < trkpt.length; i++) {
             setMarkers(parseFloat(trkpt[i].getAttribute('lat')), parseFloat(trkpt[i].getAttribute('lon')));
         }
@@ -34,7 +36,6 @@ export function InitDialog({ open, setOpen }: any) {
 
     const dialogClose = () => {
         setOpen(false);
-        dialog?.close();
     }
 
     return (

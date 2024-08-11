@@ -1,18 +1,23 @@
 import { css } from "@emotion/css";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useMemo } from "react";
 import { _type, level, load, travelCourseItems } from "../const";
 import { Horizontal } from "../ui-kit/styled/Horizontal";
 import { TravelCourseItems } from "../components/items/TravelCourseItems";
 import { travelStore } from "../entities/travel";
 import { Header } from "../components/header";
-import { stateStore } from "../entities/state";
-import { InitDialog } from "../components/dialog";
+import { openStore, stateStore } from "../entities/state";
+import { InitDialog } from "../components/dialog/InfoDialog";
 import { Markers } from "../hooks/marker";
 import { Polyline } from "../hooks/polyline";
+import { LoginDialog } from "../components/dialog/LoginDialog";
+import { supabase } from "../config";
+import { userStore } from "../entities/user";
 
 export function MainActivity() {
     const { items, setGpxPath } = travelStore();
-    const { open, setOpen, setLevel, setLoad } = stateStore();
+    const { setLevel, setLoad } = stateStore();
+    const { travelCourseOpen, setTravelCourseOpen, loginOpen } = openStore();
+    const { email, setEmail } = userStore(); 
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -65,10 +70,21 @@ export function MainActivity() {
 
             kakao.maps.event.addListener(map, 'tilesloaded', addMarker);
         }
+
     }, [travelStore.getState()]);
 
+    useMemo(() => {
+        supabase.auth.getUser()
+            .then(response => {
+                if (response.data.user?.email != '') {
+                    const email = response.data.user?.email;
+                    setEmail(email!);
+                }
+            })
+    }, []);
+
     const setState = (gpxpath: string) => {
-        setOpen(true);
+        setTravelCourseOpen(true);
         setGpxPath(gpxpath);
     }; 
 
@@ -99,7 +115,7 @@ export function MainActivity() {
 
     return (
         <>
-            <Header />
+            <Header email={email} />
             <div className={css`
                 width: 1200px;
                 margin: 0 auto;
@@ -173,7 +189,9 @@ export function MainActivity() {
                 </div>
             </div>
 
-            {open && <InitDialog open={open} setOpen={setOpen} />}
+            { travelCourseOpen && <InitDialog open={travelCourseOpen} setOpen={setTravelCourseOpen} /> }
+
+            { loginOpen && <LoginDialog open={loginOpen} /> }
         </>
     );
 }
