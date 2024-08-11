@@ -30,6 +30,10 @@ export const login = [
 
 export const categoryHeaderItems = [
     {
+        key: 0,
+        title: "소개"
+    },
+    {
         key: 1,
         title: "커뮤니티"
     },
@@ -44,10 +48,6 @@ export const categoryHeaderItems = [
     {
         key: 4,
         title: "로그인"
-    },
-    {
-        key: 5,
-        title: "회원가입"
     }
 ]
 

@@ -36,16 +36,18 @@ export function Header({ email }: any) {
                     justify-content: end;
                     align-items: center;
                 `}>
-
-                    <p>{email}</p>
-
                     { categoryHeaderItems.map((data: any, key: number) => (
                         <p key={key}
                            className={css`
                                 padding-left: 24px;
                                 font-family: 'yg-jalnan';
                                 cursor: pointer;
-                        `} onClick={() => headerItemClick(key)}>{data.title}</p>
+                        `} 
+                        onClick={() => headerItemClick(key)}>
+                            { key != 4 && data.title != "로그인"
+                                ? data.title : email != null 
+                                ? email : data.title }
+                        </p>
                     ))}
                 </div>
             </div>
