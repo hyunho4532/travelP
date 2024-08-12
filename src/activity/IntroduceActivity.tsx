@@ -54,7 +54,7 @@ export function IntroduceActivity() {
                     align-items: center;
                     text-align: center;
                 `} id="travelCourse">
-                    <img src="src\assets\travel_course.svg" width={520} height={520} />
+                    <img src="https://travelp.vercel.app/travel_course.svg" width={520} height={520} />
                     <div className={css`
                         display: flex;
                         flex-direction: column;
@@ -92,7 +92,7 @@ export function IntroduceActivity() {
                     align-items: center;
                     text-align: center;
                 `} id="travelCourse">
-                    <img src="\public\tour_course.svg" width={520} height={520} />
+                    <img src="https://travelp.vercel.app/tour_course.svg" width={520} height={520} />
                     <div className={css`
                         display: flex;
                         flex-direction: column;

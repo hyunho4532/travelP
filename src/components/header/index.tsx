@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import { categoryHeaderItems } from "../../const";
 import { openStore } from "../../entities/state";
 import { useNavigate } from "react-router-dom";
-import gsap from "gsap";
+import { moveScale } from "../../hooks/animation";
 
 export function Header({ email }: any) {
 
@@ -35,15 +35,17 @@ export function Header({ email }: any) {
     }
 
     const onMouseEnter = (event: any) => {
-        gsap.to(event.target, {
-            scale: 1.3,
+        moveScale({
+            event: event,
+            scale: 1.5,
             duration: 0.5,
-            ease: "power1.inOut"
-        })
+            ease: "power1.out"
+        });
     }
 
     const onMouseLeave = (event: any) => {
-        gsap.to(event.target, {
+        moveScale({
+            event: event,
             scale: 1,
             duration: 0.5,
             ease: "power1.inOut"
