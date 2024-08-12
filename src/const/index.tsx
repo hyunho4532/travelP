@@ -97,7 +97,7 @@ export const categoryHeaderItems = [
     },
     {
         key: 1,
-        title: "커뮤니티"
+        title: "일정"
     },
     {
         key: 2,

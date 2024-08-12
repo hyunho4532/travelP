@@ -74,6 +74,53 @@ export function IntroduceActivity() {
                         `}>
                             1. 더 효율적이고 재밌는 여행을 하기 위해.
                         </span>
+
+                        <span className={css`
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-top: 16px;
+                            padding-left: 30px;
+                        `}>
+                            2. 자기 관리 및 건강 유지를 위해.
+                        </span>
+                    </div>
+                </div>
+
+                <div className={css`
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    text-align: center;
+                `} id="travelCourse">
+                    <img src="\public\tour_course.svg" width={520} height={520} />
+                    <div className={css`
+                        display: flex;
+                        flex-direction: column;
+                    `}>
+                        <span className={css`
+                            font-weight: bold;
+                            font-size: 22px;
+                            padding-left: 30px;
+                            color: #45B1E8;
+                        `}>관광지 조회</span>
+
+                        <span className={css`
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-top: 16px;
+                            padding-left: 30px;
+                        `}>
+                            1. 시간을 절약하고 후회 없는 여행을 하기 위해.
+                        </span>
+
+                        <span className={css`
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-top: 16px;
+                            padding-left: 30px;
+                        `}>
+                            2. 편안한 여행을 하기 위해.
+                        </span>
                     </div>
                 </div>
             </div>

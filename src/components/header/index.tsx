@@ -14,6 +14,10 @@ export function Header({ email }: any) {
                 navigate("/introduce")
                 break;
             }
+            case 1: {
+                navigate("/schedule")
+                break;
+            }
             case 2: {
                 navigate("/tour")
                 break;
