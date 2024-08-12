@@ -1,21 +1,26 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 
-export const instance = axios.create({
-    baseURL: "https://apis.data.go.kr/B551011/Durunubi"
-})
-
-instance.interceptors.request.use(function (config) {
-    return config;
-}, function (error) {
-    return Promise.reject(error);
-});
-
-
-instance.interceptors.response.use(function (response) {
-    if (response.status == 400) {
+export const setInterceptors = (type: number): AxiosInstance => {
+    const instance = axios.create({
+        baseURL: type === 1 ? "https://apis.data.go.kr/B551011/Durunubi"
+                : type === 2 ? "https://apis.data.go.kr/B551011/KorService1" : "https://apis.data.go.kr/B551011/PhotoGalleryService1" 
+    })
+    
+    instance.interceptors.request.use(function (config) {
+        return config;
+    }, function (error) {
+        return Promise.reject(error);
+    });
+    
+    
+    instance.interceptors.response.use(function (response) {
+        if (response.status == 400) {
+            return response;
+        }
         return response;
-    }
-    return response;
-}, function (error) {
-    return Promise.reject(error);
-});
+    }, function (error) {
+        return Promise.reject(error);
+    });
+
+    return instance
+}

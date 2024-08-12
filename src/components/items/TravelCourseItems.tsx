@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import { ItemsProps } from "./ItemsProps";
 import { travelStore } from "../../entities/travel";
-import { instance } from "../../interceptor";
+import { setInterceptors } from "../../interceptor";
 import { _type, crsKorNm, mobileApp, mobileOS, serviceKey } from "../../const";
 import { stateStore } from "../../entities/state";
 
@@ -20,7 +20,7 @@ export function TravelCourseItems(props: ItemsProps) {
                 baseUrl += `&brdDiv=${load}`;
             }
 
-            const response = await instance.get(baseUrl);
+            const response = await setInterceptors(1).get(baseUrl);
 
             setItems(response.data.response.body.items.item);
 
