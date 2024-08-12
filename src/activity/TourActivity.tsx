@@ -6,6 +6,7 @@ import { setInterceptors } from "../interceptor";
 import { TourPictureStore, tourSpotStore } from "../entities/travel";
 import { contentType, keywords, serviceKey } from "../const";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { BounceLoader, ClipLoader } from 'react-spinners'
 
 export function TourActivity() {
 
@@ -14,6 +15,7 @@ export function TourActivity() {
 
     const { email } = userStore();
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(false);
 
     const tourSpotSelect = (spot: ChangeEvent<HTMLSelectElement>) => {
         setSpot(spot.target.value);
@@ -58,7 +60,11 @@ export function TourActivity() {
         const baseTourPictureUrl = '/galleryList1?serviceKey=ESun5Z0R0NacQfzLb0UEPB7j8XxI7tACyhwpT80fp%2FpDXspB2JKUjsrZh6DWJmSJvTlL9vKPkbJInjZtVHUXVw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&arrange=A&_type=json';
         const responseTourPicture = await setInterceptors(3).get(baseTourPictureUrl);
         
-        setPictureItems(responseTourPicture.data.response.body.items.item);
+        if (responseTourPicture) {
+            setPictureItems(responseTourPicture.data.response.body.items.item);
+            setLoading(true)
+        }
+        
     }, [])
 
     return (
@@ -84,30 +90,33 @@ export function TourActivity() {
                         text-align: center;
                     `}>
 
-                        <Swiper
-                            className={css`
-                                width: 1200px;
-                            `}
-                            spaceBetween={50}
-                            slidesPerView={1}
-                            onSlideChange={() => console.log('slide change')}
-                            onSwiper={(swiper) => console.log(swiper)}>
+                        { loading ?
+                            <Swiper
+                                className={css`
+                                    width: 1200px;
+                                `}
+                                spaceBetween={50}
+                                slidesPerView={1}
+                                onSlideChange={() => console.log('slide change')}
+                                onSwiper={(swiper) => console.log(swiper)}>
 
-                            { tourPictureItems.map((data: any, key: number) => (
-                                <SwiperSlide key={key} className={css`
-                                    width: 960px;
-                                    height: 570px;
-                                `}>
-                                    <img src={data.galWebImageUrl} width={1160} height={520} />
-                                    <p className={css`
-                                        text-align: left;
-                                        font-family: 'yg-jalnan';
-                                        padding-left: 16px; 
-                                    `}>{data.galPhotographyLocation} ● {data.galPhotographer}</p>
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
-
+                                { tourPictureItems.map((data: any, key: number) => (
+                                    <SwiperSlide key={key} className={css`
+                                        width: 960px;
+                                        height: 570px;
+                                    `}>
+                                        <img src={data.galWebImageUrl} width={1160} height={520} />
+                                        <p className={css`
+                                            text-align: left;
+                                            font-family: 'yg-jalnan';
+                                            padding-left: 16px; 
+                                        `}>{data.galPhotographyLocation} ● {data.galPhotographer}</p>
+                                    </SwiperSlide>
+                                ))}
+                        </Swiper> : 
+                        <ClipLoader className={css`
+                            margin: 0 auto;
+                        `} /> }
                     </div>
 
                     <div className={css`
