@@ -6,7 +6,7 @@ import { setInterceptors } from "../interceptor";
 import { TourPictureStore, tourSpotStore } from "../entities/travel";
 import { contentType, keywords, serviceKey } from "../const";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { BounceLoader, ClipLoader } from 'react-spinners'
+import {  ClipLoader } from 'react-spinners'
 
 export function TourActivity() {
 

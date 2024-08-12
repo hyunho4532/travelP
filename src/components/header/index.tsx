@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import { categoryHeaderItems } from "../../const";
 import { openStore } from "../../entities/state";
 import { useNavigate } from "react-router-dom";
+import gsap from "gsap";
 
 export function Header({ email }: any) {
 
@@ -33,6 +34,22 @@ export function Header({ email }: any) {
         }
     }
 
+    const onMouseEnter = (event: any) => {
+        gsap.to(event.target, {
+            scale: 1.3,
+            duration: 0.5,
+            ease: "power1.inOut"
+        })
+    }
+
+    const onMouseLeave = (event: any) => {
+        gsap.to(event.target, {
+            scale: 1,
+            duration: 0.5,
+            ease: "power1.inOut"
+        })
+    }
+
     return (
         <header className={css`
             width: 1200px;
@@ -62,7 +79,9 @@ export function Header({ email }: any) {
                                 font-family: 'yg-jalnan';
                                 cursor: pointer;
                         `} 
-                        onClick={() => headerItemClick(key)}>
+                        onClick={() => headerItemClick(key)}
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}>
                             { key != 4 && data.title != "로그인"
                                 ? data.title : email != null 
                                 ? email : data.title }
