@@ -54,7 +54,7 @@ export function LoginDialog({ open }: any) {
                     margin-top: 60px;
                 `}>
                     { login.map((value: any, key: number) => (
-                        <img className={css`
+                        <img key={key} className={css`
                             cursor: pointer;  
                         `} src={value} width={80} height={80} onClick={loginClick} />
                     ))}

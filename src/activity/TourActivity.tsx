@@ -73,15 +73,20 @@ export function TourActivity() {
                     height: 520px;
                     margin-top: 32px;
                 `}>
+                    <h2 className={css`
+                        font-family: 'yg-jalnan';
+                        text-align: left;
+                        margin-top: 80px;  
+                    `}>멋진 사진들을 조회해봤어요! 😎</h2>
 
                     <div className={css`
                         display: flex;
                         text-align: center;
                     `}>
+
                         <Swiper
                             className={css`
                                 width: 1200px;
-                                margin-top: 26px;
                             `}
                             spaceBetween={50}
                             slidesPerView={1}
@@ -89,15 +94,16 @@ export function TourActivity() {
                             onSwiper={(swiper) => console.log(swiper)}>
 
                             { tourPictureItems.map((data: any, key: number) => (
-                                <SwiperSlide className={css`
+                                <SwiperSlide key={key} className={css`
                                     width: 960px;
-                                    height: 400px;
+                                    height: 570px;
                                 `}>
+                                    <img src={data.galWebImageUrl} width={1160} height={520} />
                                     <p className={css`
                                         text-align: left;
-                                         font-family: 'yg-jalnan';
+                                        font-family: 'yg-jalnan';
+                                        padding-left: 16px; 
                                     `}>{data.galPhotographyLocation} ● {data.galPhotographer}</p>
-                                    <img src={data.galWebImageUrl} width={1160} height={440} />
                                 </SwiperSlide>
                             ))}
                         </Swiper>
@@ -169,7 +175,8 @@ export function TourActivity() {
                                 font-family: Freesentation-9Black;
                             `}>
                                 <p>{data.title.length >= 13 ? `${data.title.substring(0, 13)}...` : data.title }</p>
-                                <img src={data.firstimage != "" ? data.firstimage : '../src/assets/not_image.png'} width={180} height={160} />
+                                <img src={data.firstimage != "" 
+                                            ? data.firstimage : '../src/assets/not_image.png'} loading="lazy" width={180} height={160} />
                             </div>
                         ))}
                     </div>

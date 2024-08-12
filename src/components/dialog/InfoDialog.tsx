@@ -30,7 +30,7 @@ export function InitDialog({ open, setOpen }: any) {
         const trkpt = xmlDoc.getElementsByTagName('trkpt');
 
         for (let i = 0; i < trkpt.length; i++) {
-            setMarkers(parseFloat(trkpt[i].getAttribute('lat')), parseFloat(trkpt[i].getAttribute('lon')));
+            setMarkers(parseFloat(trkpt[i].getAttribute('lat')!), parseFloat(trkpt[i].getAttribute('lon')!));
         }
     }
 

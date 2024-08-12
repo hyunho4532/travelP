@@ -9,8 +9,6 @@ app.get('/api', (req, res) => {
     
     const filepath = req.query.gpxpath;
 
-    console.log(filepath);
-
     const url = filepath;
     request(url)
         .on('response', response => {

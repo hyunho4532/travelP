@@ -44,7 +44,7 @@ export function Header({ email }: any) {
 
                 <img className={css`
                     align-items: start;
-                `} src="src\assets\logo.jpg" width={120} height={120} />
+                `} src="https://travelp.vercel.app/logo.jpg" width={120} height={120} />
 
                 <div className={css`
                     display: flex;
