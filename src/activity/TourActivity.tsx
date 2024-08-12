@@ -1,15 +1,17 @@
 import { css } from "@emotion/css";
 import { Header } from "../components/header";
 import { userStore } from "../entities/user";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { setInterceptors } from "../interceptor";
-import { tourSpotStore } from "../entities/travel";
+import { TourPictureStore, tourSpotStore } from "../entities/travel";
 import { contentType, keywords, serviceKey } from "../const";
-import { Pagination } from "flowbite-react";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export function TourActivity() {
 
-    const { items, spot, _contentType, setItems, setSpot, setContentType } = tourSpotStore();
+    const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType } = tourSpotStore();
+    const { tourPictureItems, setPictureItems } = TourPictureStore();
+
     const { email } = userStore();
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -41,15 +43,23 @@ export function TourActivity() {
 
     const fetchTourSpots = async (page: number = 1) => {
         try {
-            const baseUrl = `/searchKeyword1?serviceKey=${serviceKey}&numOfRows=10&pageNo=${page}&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&keyword=${spot}&contentTypeId=${_contentType != 0 ? _contentType : 12}`;
+            const baseTourUrl = `/searchKeyword1?serviceKey=${serviceKey}&numOfRows=10&pageNo=${page}&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&keyword=${spot}&contentTypeId=${_contentType != 0 ? _contentType : 12}`;
 
-            const response = await setInterceptors(2).get(baseUrl);
-            setItems(response.data.response.body.items.item);
+            const responseTour = await setInterceptors(2).get(baseTourUrl);
+
+            setTourSpotItems(responseTour.data.response.body.items.item);
 
         } catch (error) {
             console.error(error);
         }
     };
+
+    useMemo(async () => {
+        const baseTourPictureUrl = '/galleryList1?serviceKey=ESun5Z0R0NacQfzLb0UEPB7j8XxI7tACyhwpT80fp%2FpDXspB2JKUjsrZh6DWJmSJvTlL9vKPkbJInjZtVHUXVw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&arrange=A&_type=json';
+        const responseTourPicture = await setInterceptors(3).get(baseTourPictureUrl);
+        
+        setPictureItems(responseTourPicture.data.response.body.items.item);
+    }, [])
 
     return (
         <>
@@ -63,6 +73,36 @@ export function TourActivity() {
                     height: 520px;
                     margin-top: 32px;
                 `}>
+
+                    <div className={css`
+                        display: flex;
+                        text-align: center;
+                    `}>
+                        <Swiper
+                            className={css`
+                                width: 1200px;
+                                margin-top: 26px;
+                            `}
+                            spaceBetween={50}
+                            slidesPerView={1}
+                            onSlideChange={() => console.log('slide change')}
+                            onSwiper={(swiper) => console.log(swiper)}>
+
+                            { tourPictureItems.map((data: any, key: number) => (
+                                <SwiperSlide className={css`
+                                    width: 960px;
+                                    height: 400px;
+                                `}>
+                                    <p className={css`
+                                        text-align: left;
+                                         font-family: 'yg-jalnan';
+                                    `}>{data.galPhotographyLocation} ● {data.galPhotographer}</p>
+                                    <img src={data.galWebImageUrl} width={1160} height={440} />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+
+                    </div>
 
                     <div className={css`
                         display: flex;    
@@ -116,7 +156,7 @@ export function TourActivity() {
                         display: grid;
                         grid-template-columns: repeat(5, 1fr); 
                     `}>
-                        { items && items.map((data: any, key: number) => (
+                        { tourSpotItems && tourSpotItems.map((data: any, key: number) => (
                             <div key={key} className={css`
                                 width: 212px;
                                 height: 240px;
@@ -148,7 +188,7 @@ export function TourActivity() {
 
                         <button className={css`
                             margin-left: 16px;    
-                            visibility: ${items.length <= 9 ? 'hidden' : 'visible'}
+                            visibility: ${tourSpotItems.length <= 9 ? 'hidden' : 'visible'}
                         `} onClick={() => onPageClick(currentPage + 1)}>다음</button>
                     </div>
                 </div>

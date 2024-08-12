@@ -25,6 +25,7 @@
     "react-kakao-maps-sdk": "^1.1.27",
     "react-paginate": "^8.2.0",
     "react-router-dom": "^6.25.1",
+    "swiper": "^11.1.9",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
