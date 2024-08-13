@@ -1,6 +1,7 @@
 import { css } from "@emotion/css";
 import { useEffect, useRef } from "react";
 import { tourSpotStore } from "../../entities/travel";
+import { supabase } from "../../config";
 
 export function TourSpotDialog({ open, setOpen }: any) {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -33,6 +34,25 @@ export function TourSpotDialog({ open, setOpen }: any) {
             dialog?.close();
         }
     }, [open]);
+
+    const tourSpotClick = async () => {
+
+        const { data } = await supabase.from('tourspots').select();
+        
+        data!.forEach(async (tourSpot) => {
+            if (tourSpot.name === spot) {
+                alert("이미 존재하는 관광 요소입니다.")
+            } else {
+                const { error } = await supabase
+                    .from('tourspots')
+                    .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0] })
+
+                if (error) {
+                    alert("등록 중 에러가 발생했습니다.");
+                }
+            }
+        });
+    }
 
     const dialogClose = () => {
         setOpen(false);
@@ -71,7 +91,7 @@ export function TourSpotDialog({ open, setOpen }: any) {
                     background-color: #9db2fb;
                     color: white;
                     font-weight: bold;
-                `}>
+                `} onClick={() => tourSpotClick()}>
                     관광지 등록 완료
                 </button>
             </div>
