@@ -13,10 +13,11 @@ export function LoginDialog({ open }: any) {
         if (open) {
             dialog?.showModal();
         }
+
     }, [open])
 
     const loginClick = async () => {
-        await supabase.auth.signInWithOAuth({
+        supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
                 queryParams: {

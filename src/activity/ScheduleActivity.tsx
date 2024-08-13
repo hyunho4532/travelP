@@ -10,7 +10,7 @@ export function ScheduleActivity() {
     const { email } = userStore();
 
     const getTourSpots = async () => {
-        const { error, data } = await supabase.from('tourspots').select();
+        const { error, data } = await supabase.from('tourspots').select().eq('isspots', true);
 
         if (error) {
             alert("조회 중 에러 발생")
