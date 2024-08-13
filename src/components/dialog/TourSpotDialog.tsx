@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { tourSpotStore } from "../../entities/travel";
 import { supabase } from "../../config";
 import Switch from "react-switch";
-import { isTravel } from "../../hooks/isTravel";
+import { isTourShared, isTravel } from "../../hooks/select";
+import { getInsert, getSelect } from "../../hooks/supabase";
 
 export function TourSpotDialog({ open, setOpen }: any) {
 
@@ -43,45 +44,27 @@ export function TourSpotDialog({ open, setOpen }: any) {
     }, [open]);
 
     const tourSpotClick = async () => {
-
-        const { data } = await supabase
-            .from('tourspots')
-            .select()
-            .eq('name', spot);
-
-        console.log(travel);
-
-        if (data!.length > 0) {
-            data!.forEach(async (tourSpot) => {
-                if (tourSpot.name === spot) {
-                    alert("이미 존재하는 관광 요소입니다.")
+        getSelect(spot)
+            .then(async (data) => {
+                if (data!.length > 0) {
+                    data!.forEach(async (tourSpot) => {
+                        if (tourSpot.name === spot) {
+                            alert("이미 존재하는 관광 요소입니다.")
+                        }
+                    });
                 } else {
-                    const { error } = await supabase
-                        .from('tourspots')
-                        .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0], isspots: tourIsChecked, istravel: travel })
-    
-                    if (error) {
-                        alert("등록 중 에러가 발생했습니다.");
-                    }
+                    const spots = [mapLocation[1], mapLocation[0], tourIsChecked, travel];
+
+                    getInsert(spot, spots)
+                        .then(error => {
+                            alert("등록이 성공적으로 완료되었어요!!");
+                        });
                 }
             });
-        } else {
-            const { error } = await supabase
-                .from('tourspots')
-                .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0], isspots: tourIsChecked, istravel: travel })
-
-            if (error) {
-                alert("등록 중 에러가 발생했습니다.");
-            }
-        }
     }
 
     const dialogClose = () => {
         setOpen(false);
-    }
-
-    const isTourShared = () => {
-        setTourIsChecked(!tourIsChecked);
     }
 
     return (
@@ -113,7 +96,7 @@ export function TourSpotDialog({ open, setOpen }: any) {
                 <Switch className={css`
                     margin-top: 20px;
                     margin-left: 16px;    
-                `} onChange={isTourShared} checked={tourIsChecked} />
+                `} onChange={() => isTourShared(tourIsChecked, setTourIsChecked)} checked={tourIsChecked} />
             </div>
 
             <div className={css`

@@ -11,3 +11,10 @@ export const isTravel = (
         case false: return setTravel("현재 여행을 하고 있어요!!");
     }
 }
+
+export const isTourShared = (
+    tourIsChecked: boolean,
+    setTourIsChecked: (value: React.SetStateAction<boolean>) => void
+) => {
+    setTourIsChecked(!tourIsChecked);
+}
