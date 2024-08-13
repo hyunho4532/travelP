@@ -12,7 +12,11 @@ export function IntroduceActivity() {
             duration: 1
         });
 
-        gsap.to("#subTitle", { y: 40, duration: 1, delay: 1 });
+        gsap.to("#subTitle", { 
+            y: 40, 
+            duration: 1, 
+            delay: 1 
+        });
 
         gsap.fromTo("#travelCourse", {
             opacity: 0

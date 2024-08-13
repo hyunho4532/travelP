@@ -7,13 +7,15 @@ import { TourPictureStore, tourSpotStore } from "../entities/travel";
 import { contentType, keywords, serviceKey } from "../const";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {  ClipLoader } from 'react-spinners'
+import { TourSpotDialog } from "../components/dialog/TourSpotDialog";
 
 export function TourActivity() {
 
     const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType } = tourSpotStore();
     const { tourPictureItems, setPictureItems } = TourPictureStore();
-
     const { email } = userStore();
+
+    const [open, setOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
 
@@ -41,6 +43,11 @@ export function TourActivity() {
         })();
 
         setContentType(values!); 
+    }
+
+    const tourSpotClick = (tourSpot: string) => {
+        setOpen(true);
+        setSpot(tourSpot);
     }
 
     const fetchTourSpots = async (page: number = 1) => {
@@ -182,7 +189,7 @@ export function TourActivity() {
                                 margin-left: 16px;
                                 text-align: center;
                                 font-family: Freesentation-9Black;
-                            `}>
+                            `} onClick={() => tourSpotClick(data.title)}>
                                 <p>{data.title.length >= 13 ? `${data.title.substring(0, 13)}...` : data.title }</p>
                                 <img src={data.firstimage != "" 
                                             ? data.firstimage : '../src/assets/not_image.png'} loading="lazy" width={180} height={160} />
@@ -209,6 +216,8 @@ export function TourActivity() {
                     </div>
                 </div>
             </div>
+
+            { open && <TourSpotDialog open={open} /> }
         </>
     )
 }
