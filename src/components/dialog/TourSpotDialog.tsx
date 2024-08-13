@@ -1,7 +1,6 @@
 import { css } from "@emotion/css";
 import { useEffect, useRef, useState } from "react";
 import { tourSpotStore } from "../../entities/travel";
-import { supabase } from "../../config";
 import Switch from "react-switch";
 import { isTourShared, isTravel } from "../../hooks/select";
 import { getInsert, getSelect } from "../../hooks/supabase";

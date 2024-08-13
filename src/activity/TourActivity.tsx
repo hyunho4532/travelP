@@ -180,7 +180,7 @@ export function TourActivity() {
 
                     <div className={css`
                         display: grid;
-                        grid-template-columns: repeat(5, 1fr); 
+                        grid-template-columns: repeat(5, 1fr);
                     `}>
                         { tourSpotItems && tourSpotItems.map((data: any, key: number) => (
                             <div key={key} className={css`

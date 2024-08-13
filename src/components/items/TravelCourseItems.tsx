@@ -1,9 +1,12 @@
 import { css } from "@emotion/css";
-import { ItemsProps } from "./ItemsProps";
 import { travelStore } from "../../entities/travel";
 import { setInterceptors } from "../../interceptor";
 import { _type, crsKorNm, mobileApp, mobileOS, serviceKey } from "../../const";
 import { stateStore } from "../../entities/state";
+
+export interface ItemsProps {
+    items: any
+}
 
 export function TravelCourseItems(props: ItemsProps) {
 
