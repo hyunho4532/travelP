@@ -12,7 +12,11 @@ export function IntroduceActivity() {
             duration: 1
         });
 
-        gsap.to("#subTitle", { y: 40, duration: 1, delay: 1 });
+        gsap.to("#subTitle", { 
+            y: 40, 
+            duration: 1, 
+            delay: 1 
+        });
 
         gsap.fromTo("#travelCourse", {
             opacity: 0
@@ -54,7 +58,7 @@ export function IntroduceActivity() {
                     align-items: center;
                     text-align: center;
                 `} id="travelCourse">
-                    <img src="src\assets\travel_course.svg" width={520} height={520} />
+                    <img src="https://travelp.vercel.app/travel_course.svg" width={520} height={520} />
                     <div className={css`
                         display: flex;
                         flex-direction: column;
@@ -73,6 +77,53 @@ export function IntroduceActivity() {
                             padding-left: 30px;
                         `}>
                             1. 더 효율적이고 재밌는 여행을 하기 위해.
+                        </span>
+
+                        <span className={css`
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-top: 16px;
+                            padding-left: 30px;
+                        `}>
+                            2. 자기 관리 및 건강 유지를 위해.
+                        </span>
+                    </div>
+                </div>
+
+                <div className={css`
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    text-align: center;
+                `} id="travelCourse">
+                    <img src="https://travelp.vercel.app/tour_course.svg" width={520} height={520} />
+                    <div className={css`
+                        display: flex;
+                        flex-direction: column;
+                    `}>
+                        <span className={css`
+                            font-weight: bold;
+                            font-size: 22px;
+                            padding-left: 30px;
+                            color: #45B1E8;
+                        `}>관광지 조회</span>
+
+                        <span className={css`
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-top: 16px;
+                            padding-left: 30px;
+                        `}>
+                            1. 시간을 절약하고 후회 없는 여행을 하기 위해.
+                        </span>
+
+                        <span className={css`
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-top: 16px;
+                            padding-left: 30px;
+                        `}>
+                            2. 편안한 여행을 하기 위해.
                         </span>
                     </div>
                 </div>

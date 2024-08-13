@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { MainActivity } from "../activity/MainActivity";
 import { IntroduceActivity } from "../activity/IntroduceActivity";
 import { TourActivity } from "../activity/TourActivity";
+import { ScheduleActivity } from "../activity/ScheduleActivity";
 
 export const router = createBrowserRouter([
     {
@@ -19,5 +20,9 @@ export const router = createBrowserRouter([
     {
         path: "/course",
         element: <MainActivity />
+    },
+    {
+        path: "/schedule",
+        element: <ScheduleActivity />
     }
 ])

@@ -6,14 +6,19 @@ import { setInterceptors } from "../interceptor";
 import { TourPictureStore, tourSpotStore } from "../entities/travel";
 import { contentType, keywords, serviceKey } from "../const";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import {  ClipLoader } from 'react-spinners'
+import { TourSpotDialog } from "../components/dialog/TourSpotDialog";
+import { openStore } from "../entities/state";
 
 export function TourActivity() {
 
-    const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType } = tourSpotStore();
+    const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType, setLocation } = tourSpotStore();
     const { tourPictureItems, setPictureItems } = TourPictureStore();
-
     const { email } = userStore();
+    const { tourSpotOpen, setTourSpotOpen } = openStore();
+
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(false);
 
     const tourSpotSelect = (spot: ChangeEvent<HTMLSelectElement>) => {
         setSpot(spot.target.value);
@@ -41,6 +46,14 @@ export function TourActivity() {
         setContentType(values!); 
     }
 
+    const tourSpotClick = (tourSpot: string, mapX: number, mapY: number) => {
+        const tourSpotLocation = [mapX, mapY];
+
+        setTourSpotOpen(true);
+        setSpot(tourSpot);
+        setLocation(tourSpotLocation);
+    }
+
     const fetchTourSpots = async (page: number = 1) => {
         try {
             const baseTourUrl = `/searchKeyword1?serviceKey=${serviceKey}&numOfRows=10&pageNo=${page}&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&keyword=${spot}&contentTypeId=${_contentType != 0 ? _contentType : 12}`;
@@ -58,7 +71,11 @@ export function TourActivity() {
         const baseTourPictureUrl = '/galleryList1?serviceKey=ESun5Z0R0NacQfzLb0UEPB7j8XxI7tACyhwpT80fp%2FpDXspB2JKUjsrZh6DWJmSJvTlL9vKPkbJInjZtVHUXVw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&arrange=A&_type=json';
         const responseTourPicture = await setInterceptors(3).get(baseTourPictureUrl);
         
-        setPictureItems(responseTourPicture.data.response.body.items.item);
+        if (responseTourPicture) {
+            setPictureItems(responseTourPicture.data.response.body.items.item);
+            setLoading(true)
+        }
+        
     }, [])
 
     return (
@@ -73,35 +90,44 @@ export function TourActivity() {
                     height: 520px;
                     margin-top: 32px;
                 `}>
+                    <h2 className={css`
+                        font-family: 'yg-jalnan';
+                        text-align: left;
+                        margin-top: 80px;  
+                    `}>멋진 사진들을 조회해봤어요! 😎</h2>
 
                     <div className={css`
                         display: flex;
                         text-align: center;
                     `}>
-                        <Swiper
-                            className={css`
-                                width: 1200px;
-                                margin-top: 26px;
-                            `}
-                            spaceBetween={50}
-                            slidesPerView={1}
-                            onSlideChange={() => console.log('slide change')}
-                            onSwiper={(swiper) => console.log(swiper)}>
 
-                            { tourPictureItems.map((data: any, key: number) => (
-                                <SwiperSlide className={css`
-                                    width: 960px;
-                                    height: 400px;
-                                `}>
-                                    <p className={css`
-                                        text-align: left;
-                                         font-family: 'yg-jalnan';
-                                    `}>{data.galPhotographyLocation} ● {data.galPhotographer}</p>
-                                    <img src={data.galWebImageUrl} width={1160} height={440} />
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
+                        { loading ?
+                            <Swiper
+                                className={css`
+                                    width: 1200px;
+                                `}
+                                spaceBetween={50}
+                                slidesPerView={1}
+                                onSlideChange={() => console.log('slide change')}
+                                onSwiper={(swiper) => console.log(swiper)}>
 
+                                { tourPictureItems.map((data: any, key: number) => (
+                                    <SwiperSlide key={key} className={css`
+                                        width: 960px;
+                                        height: 570px;
+                                    `}>
+                                        <img src={data.galWebImageUrl} width={1160} height={520} />
+                                        <p className={css`
+                                            text-align: left;
+                                            font-family: 'yg-jalnan';
+                                            padding-left: 16px; 
+                                        `}>{data.galPhotographyLocation} ● {data.galPhotographer}</p>
+                                    </SwiperSlide>
+                                ))}
+                        </Swiper> : 
+                        <ClipLoader className={css`
+                            margin: 0 auto;
+                        `} /> }
                     </div>
 
                     <div className={css`
@@ -167,9 +193,10 @@ export function TourActivity() {
                                 margin-left: 16px;
                                 text-align: center;
                                 font-family: Freesentation-9Black;
-                            `}>
+                            `} onClick={() => tourSpotClick(data.title, data.mapx, data.mapy)}>
                                 <p>{data.title.length >= 13 ? `${data.title.substring(0, 13)}...` : data.title }</p>
-                                <img src={data.firstimage != "" ? data.firstimage : '../src/assets/not_image.png'} width={180} height={160} />
+                                <img src={data.firstimage != "" 
+                                            ? data.firstimage : '../src/assets/not_image.png'} loading="lazy" width={180} height={160} />
                             </div>
                         ))}
                     </div>
@@ -193,6 +220,8 @@ export function TourActivity() {
                     </div>
                 </div>
             </div>
+
+            { tourSpotOpen && <TourSpotDialog open={tourSpotOpen} setOpen={setTourSpotOpen} /> }
         </>
     )
 }

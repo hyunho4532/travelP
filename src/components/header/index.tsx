@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import { categoryHeaderItems } from "../../const";
 import { openStore } from "../../entities/state";
 import { useNavigate } from "react-router-dom";
+import { moveScale } from "../../hooks/animation";
 
 export function Header({ email }: any) {
 
@@ -12,6 +13,10 @@ export function Header({ email }: any) {
         switch (key) {
             case 0: {
                 navigate("/introduce")
+                break;
+            }
+            case 1: {
+                navigate("/schedule")
                 break;
             }
             case 2: {
@@ -29,6 +34,24 @@ export function Header({ email }: any) {
         }
     }
 
+    const onMouseEnter = (event: any) => {
+        moveScale({
+            event: event,
+            scale: 1.5,
+            duration: 0.5,
+            ease: "power1.out"
+        });
+    }
+
+    const onMouseLeave = (event: any) => {
+        moveScale({
+            event: event,
+            scale: 1,
+            duration: 0.5,
+            ease: "power1.inOut"
+        })
+    }
+
     return (
         <header className={css`
             width: 1200px;
@@ -44,7 +67,7 @@ export function Header({ email }: any) {
 
                 <img className={css`
                     align-items: start;
-                `} src="src\assets\logo.jpg" width={120} height={120} />
+                `} src="https://travelp.vercel.app/logo.jpg" width={120} height={120} />
 
                 <div className={css`
                     display: flex;
@@ -58,7 +81,9 @@ export function Header({ email }: any) {
                                 font-family: 'yg-jalnan';
                                 cursor: pointer;
                         `} 
-                        onClick={() => headerItemClick(key)}>
+                        onClick={() => headerItemClick(key)}
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}>
                             { key != 4 && data.title != "로그인"
                                 ? data.title : email != null 
                                 ? email : data.title }

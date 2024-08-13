@@ -55,7 +55,7 @@ export function MainActivity() {
 
                 const startPosition = new kakao.maps.LatLng(path[0].getLat(), path[0].getLng());
 
-                const newPolyline = Polyline(map, path);
+                const newPolyline = Polyline(map, path!);
 
                 const positionArray = [
                     startPosition, 

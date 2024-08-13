@@ -24,8 +24,8 @@ export const load = [
 ]
 
 export const login = [
-    "src/assets/kakao.png",
-    "src/assets/google.png"
+    "https://travelp.vercel.app/kakao.png",
+    "https://travelp.vercel.app/google.png"
 ]
 
 export const keywords = [
@@ -97,7 +97,7 @@ export const categoryHeaderItems = [
     },
     {
         key: 1,
-        title: "커뮤니티"
+        title: "일정"
     },
     {
         key: 2,
