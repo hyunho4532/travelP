@@ -8,14 +8,15 @@ import { contentType, keywords, serviceKey } from "../const";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {  ClipLoader } from 'react-spinners'
 import { TourSpotDialog } from "../components/dialog/TourSpotDialog";
+import { openStore } from "../entities/state";
 
 export function TourActivity() {
 
     const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType, setLocation } = tourSpotStore();
     const { tourPictureItems, setPictureItems } = TourPictureStore();
     const { email } = userStore();
+    const { tourSpotOpen, setTourSpotOpen } = openStore();
 
-    const [open, setOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
 
@@ -27,8 +28,6 @@ export function TourActivity() {
         setCurrentPage(page);
         await fetchTourSpots(page);
     }
-
-    console.log(tourSpotItems);
 
     const tourContentTypeSelect = (contentType: ChangeEvent<HTMLSelectElement>) => {
         const values = (() => {
@@ -50,7 +49,7 @@ export function TourActivity() {
     const tourSpotClick = (tourSpot: string, mapX: number, mapY: number) => {
         const tourSpotLocation = [mapX, mapY];
 
-        setOpen(true);
+        setTourSpotOpen(true);
         setSpot(tourSpot);
         setLocation(tourSpotLocation);
     }
@@ -222,7 +221,7 @@ export function TourActivity() {
                 </div>
             </div>
 
-            { open && <TourSpotDialog open={open} /> }
+            { tourSpotOpen && <TourSpotDialog open={tourSpotOpen} setOpen={setTourSpotOpen} /> }
         </>
     )
 }

@@ -10,9 +10,11 @@ export type State = {
 
 export type Open = {
     travelCourseOpen: boolean,
+    tourSpotOpen: boolean,
     loginOpen: boolean,
 
     setTravelCourseOpen: (isOpen: boolean) => void,
+    setTourSpotOpen: (isOpen: boolean) => void,
     setLoginOpen: (isOpen: boolean) => void
 }
 
@@ -28,6 +30,9 @@ export const openStore = create<Open>((set) => ({
     travelCourseOpen: false,
     setTravelCourseOpen: (isOpen: boolean) => set({ travelCourseOpen: isOpen }),
 
+    tourSpotOpen: false,
+    setTourSpotOpen: (isOpen: boolean) => set({ tourSpotOpen: isOpen }),
+
     loginOpen: false,
-    setLoginOpen: (isOpen: boolean) => set({ loginOpen: isOpen }) 
+    setLoginOpen: (isOpen: boolean) => set({ loginOpen: isOpen })
 }));
