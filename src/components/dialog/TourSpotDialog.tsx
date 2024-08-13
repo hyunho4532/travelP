@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { tourSpotStore } from "../../entities/travel";
 import { supabase } from "../../config";
 import Switch from "react-switch";
+import { isTravel } from "../../hooks/isTravel";
 
 export function TourSpotDialog({ open, setOpen }: any) {
 
@@ -10,8 +11,9 @@ export function TourSpotDialog({ open, setOpen }: any) {
     const mapRef = useRef<HTMLDivElement>(null);
     const { spot, mapLocation } = tourSpotStore();
 
-    const [checked, setChecked] = useState(false);
-
+    const [tourIsChecked, setTourIsChecked] = useState(false);
+    const [travelIsChecked, setTravelIsChecked] = useState(false);
+    const [travel, setTravel] = useState('');
 
     useEffect(() => {
         const dialog = dialogRef.current;
@@ -47,6 +49,8 @@ export function TourSpotDialog({ open, setOpen }: any) {
             .select()
             .eq('name', spot);
 
+        console.log(travel);
+
         if (data!.length > 0) {
             data!.forEach(async (tourSpot) => {
                 if (tourSpot.name === spot) {
@@ -54,7 +58,7 @@ export function TourSpotDialog({ open, setOpen }: any) {
                 } else {
                     const { error } = await supabase
                         .from('tourspots')
-                        .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0], isspots: checked })
+                        .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0], isspots: tourIsChecked, istravel: travel })
     
                     if (error) {
                         alert("등록 중 에러가 발생했습니다.");
@@ -64,7 +68,7 @@ export function TourSpotDialog({ open, setOpen }: any) {
         } else {
             const { error } = await supabase
                 .from('tourspots')
-                .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0], isspots: checked })
+                .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0], isspots: tourIsChecked, istravel: travel })
 
             if (error) {
                 alert("등록 중 에러가 발생했습니다.");
@@ -76,8 +80,8 @@ export function TourSpotDialog({ open, setOpen }: any) {
         setOpen(false);
     }
 
-    const handleChange = () => {
-        setChecked(!checked);
+    const isTourShared = () => {
+        setTourIsChecked(!tourIsChecked);
     }
 
     return (
@@ -109,8 +113,22 @@ export function TourSpotDialog({ open, setOpen }: any) {
                 <Switch className={css`
                     margin-top: 20px;
                     margin-left: 16px;    
-                `} onChange={handleChange} checked={checked} />
-                
+                `} onChange={isTourShared} checked={tourIsChecked} />
+            </div>
+
+            <div className={css`
+                display: flex;    
+            `}>        
+                <p className={css`
+                    margin-top: 24px;
+                    font-weight: bold;
+                    font-size: 14px;
+                `}>현재 여행 중이신가요?</p>
+
+                <Switch className={css`
+                    margin-top: 20px;
+                    margin-left: 16px;    
+                `} onChange={() => isTravel(travelIsChecked, setTravel, setTravelIsChecked)} checked={travelIsChecked} />
             </div>
 
 

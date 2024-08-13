@@ -73,8 +73,8 @@ export function MainActivity() {
 
     }, [travelStore.getState()]);
 
-    useMemo(() => {
-        supabase.auth.getUser()
+    useMemo(async () => {
+        await supabase.auth.getUser()
             .then(response => {
                 if (response.data.user?.email != '') {
                     const email = response.data.user?.email;
