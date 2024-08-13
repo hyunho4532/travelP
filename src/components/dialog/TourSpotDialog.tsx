@@ -1,12 +1,17 @@
 import { css } from "@emotion/css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { tourSpotStore } from "../../entities/travel";
 import { supabase } from "../../config";
+import Switch from "react-switch";
 
 export function TourSpotDialog({ open, setOpen }: any) {
+
     const dialogRef = useRef<HTMLDialogElement>(null);
     const mapRef = useRef<HTMLDivElement>(null);
     const { spot, mapLocation } = tourSpotStore();
+
+    const [checked, setChecked] = useState(false);
+
 
     useEffect(() => {
         const dialog = dialogRef.current;
@@ -37,25 +42,42 @@ export function TourSpotDialog({ open, setOpen }: any) {
 
     const tourSpotClick = async () => {
 
-        const { data } = await supabase.from('tourspots').select();
-        
-        data!.forEach(async (tourSpot) => {
-            if (tourSpot.name === spot) {
-                alert("이미 존재하는 관광 요소입니다.")
-            } else {
-                const { error } = await supabase
-                    .from('tourspots')
-                    .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0] })
+        const { data } = await supabase
+            .from('tourspots')
+            .select()
+            .eq('name', spot);
 
-                if (error) {
-                    alert("등록 중 에러가 발생했습니다.");
+        if (data!.length > 0) {
+            data!.forEach(async (tourSpot) => {
+                if (tourSpot.name === spot) {
+                    alert("이미 존재하는 관광 요소입니다.")
+                } else {
+                    const { error } = await supabase
+                        .from('tourspots')
+                        .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0], isspots: checked })
+    
+                    if (error) {
+                        alert("등록 중 에러가 발생했습니다.");
+                    }
                 }
+            });
+        } else {
+            const { error } = await supabase
+                .from('tourspots')
+                .insert({ name: spot, mapx: mapLocation[1], mapy: mapLocation[0], isspots: checked })
+
+            if (error) {
+                alert("등록 중 에러가 발생했습니다.");
             }
-        });
+        }
     }
 
     const dialogClose = () => {
         setOpen(false);
+    }
+
+    const handleChange = () => {
+        setChecked(!checked);
     }
 
     return (
@@ -74,6 +96,23 @@ export function TourSpotDialog({ open, setOpen }: any) {
                 margin-top: 24px;
                 font-weight: bold;    
             `}>{spot}</p>
+
+            <div className={css`
+                display: flex;    
+            `}>        
+                <p className={css`
+                    margin-top: 24px;
+                    font-weight: bold;
+                    font-size: 14px;
+                `}>다른 사람들에게 관광지 공유</p>
+
+                <Switch className={css`
+                    margin-top: 20px;
+                    margin-left: 16px;    
+                `} onChange={handleChange} checked={checked} />
+                
+            </div>
+
 
             <div id="map" ref={mapRef} className={css`
                 width: 100%;
