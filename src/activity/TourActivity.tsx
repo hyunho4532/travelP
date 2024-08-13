@@ -11,7 +11,7 @@ import { TourSpotDialog } from "../components/dialog/TourSpotDialog";
 
 export function TourActivity() {
 
-    const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType } = tourSpotStore();
+    const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType, setLocation } = tourSpotStore();
     const { tourPictureItems, setPictureItems } = TourPictureStore();
     const { email } = userStore();
 
@@ -27,6 +27,8 @@ export function TourActivity() {
         setCurrentPage(page);
         await fetchTourSpots(page);
     }
+
+    console.log(tourSpotItems);
 
     const tourContentTypeSelect = (contentType: ChangeEvent<HTMLSelectElement>) => {
         const values = (() => {
@@ -45,9 +47,12 @@ export function TourActivity() {
         setContentType(values!); 
     }
 
-    const tourSpotClick = (tourSpot: string) => {
+    const tourSpotClick = (tourSpot: string, mapX: number, mapY: number) => {
+        const tourSpotLocation = [mapX, mapY];
+
         setOpen(true);
         setSpot(tourSpot);
+        setLocation(tourSpotLocation);
     }
 
     const fetchTourSpots = async (page: number = 1) => {
@@ -189,7 +194,7 @@ export function TourActivity() {
                                 margin-left: 16px;
                                 text-align: center;
                                 font-family: Freesentation-9Black;
-                            `} onClick={() => tourSpotClick(data.title)}>
+                            `} onClick={() => tourSpotClick(data.title, data.mapx, data.mapy)}>
                                 <p>{data.title.length >= 13 ? `${data.title.substring(0, 13)}...` : data.title }</p>
                                 <img src={data.firstimage != "" 
                                             ? data.firstimage : '../src/assets/not_image.png'} loading="lazy" width={180} height={160} />

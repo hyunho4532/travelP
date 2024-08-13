@@ -14,12 +14,14 @@ export type Travel = {
 
 export type TourSpot = {
     tourSpotItems: string[],
+    mapLocation: number[],
     spot: string,
     _contentType: number,
 
     setTourSpotItems: (newItems: string[]) => void
     setSpot: (newSpot: string) => void
     setContentType: (newContentType: number) => void
+    setLocation: (newLocation: number[]) => void
 }
 
 export type TourPicture = {
@@ -47,11 +49,14 @@ export const tourSpotStore = create<TourSpot>((set) => ({
     tourSpotItems: [],
     setTourSpotItems: (newItems: string[]) => set({ tourSpotItems: newItems }),
 
+    mapLocation: [],
+    setLocation: (newLocation: number[]) => set({ mapLocation: newLocation }),
+
     spot: '',
     setSpot: (newSpot: string) => set({ spot: newSpot }),
 
     _contentType: 0,
-    setContentType: (newContentType: number) => set({ _contentType: newContentType })
+    setContentType: (newContentType: number) => set({ _contentType: newContentType }),
 }));
 
 export const TourPictureStore = create<TourPicture>((set) => ({
