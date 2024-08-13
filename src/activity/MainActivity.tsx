@@ -17,7 +17,7 @@ export function MainActivity() {
     const { items, setGpxPath } = travelStore();
     const { setLevel, setLoad } = stateStore();
     const { travelCourseOpen, setTravelCourseOpen, loginOpen } = openStore();
-    const { email, setEmail } = userStore(); 
+    const { email, setData } = userStore(); 
 
     useEffect(() => {
         const container = document.getElementById('map');
@@ -78,7 +78,9 @@ export function MainActivity() {
             .then(response => {
                 if (response.data.user?.email != '') {
                     const email = response.data.user?.email;
-                    setEmail(email!);
+                    const name = response.data.user?.user_metadata.name;
+
+                    setData(email!, name!);
                 }
             })
     }, []);

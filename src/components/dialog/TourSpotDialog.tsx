@@ -4,12 +4,14 @@ import { tourSpotStore } from "../../entities/travel";
 import Switch from "react-switch";
 import { isTourShared, isTravel } from "../../hooks/select";
 import { getInsert, getSelect } from "../../hooks/supabase";
+import { userStore } from "../../entities/user";
 
 export function TourSpotDialog({ open, setOpen }: any) {
 
     const dialogRef = useRef<HTMLDialogElement>(null);
     const mapRef = useRef<HTMLDivElement>(null);
     const { spot, mapLocation } = tourSpotStore();
+    const { email, author } = userStore();
 
     const [tourIsChecked, setTourIsChecked] = useState(false);
     const [travelIsChecked, setTravelIsChecked] = useState(false);
@@ -52,7 +54,7 @@ export function TourSpotDialog({ open, setOpen }: any) {
                         }
                     });
                 } else {
-                    const spots = [mapLocation[1], mapLocation[0], tourIsChecked, travel];
+                    const spots = [mapLocation[1], mapLocation[0], tourIsChecked, travel, author];
 
                     getInsert(spot, spots)
                         .then(error => {
