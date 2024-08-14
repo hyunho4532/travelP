@@ -64,6 +64,7 @@ export function TourSpotDialog({ open, setOpen }: any) {
                                 getInsert(spot, spots)
                                     .then(error => {
                                         alert("등록이 성공적으로 완료되었어요!!");
+                                        console.log(error);
                                     });
                             }
                         })
