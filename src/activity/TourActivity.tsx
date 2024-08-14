@@ -240,7 +240,7 @@ export function TourActivity() {
                             `} onClick={() => tourSpotClick(data.title, data.mapx, data.mapy)}>
                                 <p>{data.title.length >= 13 ? `${data.title.substring(0, 13)}...` : data.title }</p>
                                 <img src={data.firstimage != "" 
-                                            ? data.firstimage : '../src/assets/not_image.png'} loading="lazy" width={180} height={160} />
+                                            ? data.firstimage : 'https://travelp.vercel.app/not_image.png'} loading="lazy" width={180} height={160} />
                             </div>
                         ))}
                     </div>
