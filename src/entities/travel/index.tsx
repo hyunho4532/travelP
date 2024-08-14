@@ -14,11 +14,13 @@ export type Travel = {
 
 export type TourSpot = {
     tourSpotItems: string[],
+    notificationItems: string[],
     mapLocation: number[],
     spot: string,
     _contentType: number,
 
     setTourSpotItems: (newItems: string[]) => void
+    setNotificationItems: (newItems: string[]) => void
     setSpot: (newSpot: string) => void
     setContentType: (newContentType: number) => void
     setLocation: (newLocation: number[]) => void
@@ -46,6 +48,10 @@ export const travelStore = create<Travel>((set) => ({
 }));
 
 export const tourSpotStore = create<TourSpot>((set) => ({
+
+    notificationItems: [],
+    setNotificationItems: (newItems: string[]) => set({ notificationItems: newItems }),
+
     tourSpotItems: [],
     setTourSpotItems: (newItems: string[]) => set({ tourSpotItems: newItems }),
 

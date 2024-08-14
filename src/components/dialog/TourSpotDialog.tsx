@@ -1,10 +1,10 @@
 import { css } from "@emotion/css";
 import { useEffect, useRef, useState } from "react";
 import { tourSpotStore } from "../../entities/travel";
-import { supabase } from "../../config";
 import Switch from "react-switch";
 import { isTourShared, isTravel } from "../../hooks/select";
 import { getInsert, getSelect } from "../../hooks/supabase";
+import { supabase } from "../../config";
 
 export function TourSpotDialog({ open, setOpen }: any) {
 
@@ -53,12 +53,20 @@ export function TourSpotDialog({ open, setOpen }: any) {
                         }
                     });
                 } else {
-                    const spots = [mapLocation[1], mapLocation[0], tourIsChecked, travel];
+                    supabase.auth.getUser()
+                        .then(response => {
+                            if (response.data.user?.email != '') {
+                                const email = response.data.user?.email;
+                                const author = response.data.user?.user_metadata.name;
 
-                    getInsert(spot, spots)
-                        .then(error => {
-                            alert("등록이 성공적으로 완료되었어요!!");
-                        });
+                                const spots = [mapLocation[1], mapLocation[0], tourIsChecked, travel, author, email];
+                                
+                                getInsert(spot, spots)
+                                    .then(error => {
+                                        alert("등록이 성공적으로 완료되었어요!!");
+                                    });
+                            }
+                        })
                 }
             });
     }

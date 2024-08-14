@@ -3,6 +3,7 @@ import { Header } from "../components/header";
 import { useEffect, useState } from "react";
 import { supabase } from "../config";
 import { userStore } from "../entities/user";
+import { UserSpotItems } from "../components/items/UserSpotItems";
 
 export function ScheduleActivity() {
 
@@ -22,9 +23,9 @@ export function ScheduleActivity() {
     }
 
     useEffect(() => {
-        var container = document.getElementById('map');
+        const container = document.getElementById('map');
 
-        var options = {
+        const options = {
             center: new kakao.maps.LatLng(36.598651942531525, 127.87469221278923),
             level: 12
         };
@@ -33,9 +34,9 @@ export function ScheduleActivity() {
 
         tourSpots.forEach(tourSpot => {
 
-            var markerPosition = new kakao.maps.LatLng(tourSpot.mapx, tourSpot.mapy);
+            const markerPosition = new kakao.maps.LatLng(tourSpot.mapx, tourSpot.mapy);
 
-            var marker = new kakao.maps.Marker({
+            const marker = new kakao.maps.Marker({
                 position: markerPosition,
                 map: map
             });
@@ -70,6 +71,21 @@ export function ScheduleActivity() {
                     `} onClick={getTourSpots}>
                     등록한 관광지 조회하기
                 </button>
+                
+
+                <h2 className={css`
+                    font-family: 'yg-jalnan';
+                    text-align: left;
+                    margin-top: 80px;  
+                    `}>사람들은 어디로 여행을 떠날까요? 😎</h2>
+
+                <div className={css`
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                `}>
+                    <UserSpotItems items={tourSpots} />
+                </div>
+
             </div>
         </>
     )

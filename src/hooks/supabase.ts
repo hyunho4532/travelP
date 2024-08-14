@@ -12,7 +12,7 @@ export const getSelect = async (spot: string) => {
 export const getInsert = async (spot: string, spots: any[]) => {
     const { error } = await supabase
         .from('tourspots')
-        .insert({ name: spot, mapx: spots[0], mapy: spots[1], isspots: spots[2], istravel: spots[3] })
+        .insert({ name: spot, mapx: spots[0], mapy: spots[1], isspots: spots[2], istravel: spots[3], author: spots[4], email: spots[5] })
 
-    return error;
+    return error;``
 }
