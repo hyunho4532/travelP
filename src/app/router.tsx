@@ -3,6 +3,7 @@ import { MainActivity } from "../activity/MainActivity";
 import { IntroduceActivity } from "../activity/IntroduceActivity";
 import { TourActivity } from "../activity/TourActivity";
 import { ScheduleActivity } from "../activity/ScheduleActivity";
+import { TourDetailActivity } from "../activity/TourDetailActivity";
 
 export const router = createBrowserRouter([
     {
@@ -24,5 +25,9 @@ export const router = createBrowserRouter([
     {
         path: "/schedule",
         element: <ScheduleActivity />
+    },
+    {
+        path: "/detail/tour",
+        element: <TourDetailActivity />
     }
 ])

@@ -10,7 +10,7 @@ import {  ClipLoader } from 'react-spinners'
 import { TourSpotDialog } from "../components/dialog/TourSpotDialog";
 import { openStore } from "../entities/state";
 import { supabase } from "../config";
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -240,7 +240,7 @@ export function TourActivity() {
                             `} onClick={() => tourSpotClick(data.title, data.mapx, data.mapy)}>
                                 <p>{data.title.length >= 13 ? `${data.title.substring(0, 13)}...` : data.title }</p>
                                 <img src={data.firstimage != "" 
-                                            ? data.firstimage : '../src/assets/not_image.png'} loading="lazy" width={180} height={160} />
+                                            ? data.firstimage : 'https://travelp.vercel.app/not_image.png'} loading="lazy" width={180} height={160} />
                             </div>
                         ))}
                     </div>
