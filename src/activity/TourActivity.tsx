@@ -9,10 +9,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import {  ClipLoader } from 'react-spinners'
 import { TourSpotDialog } from "../components/dialog/TourSpotDialog";
 import { openStore } from "../entities/state";
+import { supabase } from "../config";
 
 export function TourActivity() {
 
-    const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType, setLocation } = tourSpotStore();
+    const { tourSpotItems, notificationItems, spot, _contentType, setTourSpotItems, setNotificationItems, setSpot, setContentType, setLocation } = tourSpotStore();
     const { tourPictureItems, setPictureItems } = TourPictureStore();
     const { email } = userStore();
     const { tourSpotOpen, setTourSpotOpen } = openStore();
@@ -68,6 +69,18 @@ export function TourActivity() {
     };
 
     useMemo(async () => {
+
+        const response = await supabase.auth.getUser();
+        
+        if (response) {
+            const notifications = await supabase
+                .from('notification')
+                .select()
+                .eq('to', response.data.user?.email);
+
+            setNotificationItems(notifications.data!);
+        }
+
         const baseTourPictureUrl = '/galleryList1?serviceKey=ESun5Z0R0NacQfzLb0UEPB7j8XxI7tACyhwpT80fp%2FpDXspB2JKUjsrZh6DWJmSJvTlL9vKPkbJInjZtVHUXVw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&arrange=A&_type=json';
         const responseTourPicture = await setInterceptors(3).get(baseTourPictureUrl);
         
@@ -90,6 +103,17 @@ export function TourActivity() {
                     height: 520px;
                     margin-top: 32px;
                 `}>
+
+                    <h2 className={css`
+                        font-family: 'yg-jalnan';
+                        text-align: left;
+                        margin-top: 80px;
+                    `}>당신을 응원하는 사람들이 있어요!</h2>
+
+                    { notificationItems && notificationItems.map((data: any, index: number) => (
+                        <p>{data.message}</p>
+                    ))}
+
                     <h2 className={css`
                         font-family: 'yg-jalnan';
                         text-align: left;
