@@ -10,6 +10,11 @@ import {  ClipLoader } from 'react-spinners'
 import { TourSpotDialog } from "../components/dialog/TourSpotDialog";
 import { openStore } from "../entities/state";
 import { supabase } from "../config";
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 
 export function TourActivity() {
 
@@ -110,9 +115,24 @@ export function TourActivity() {
                         margin-top: 80px;
                     `}>당신을 응원하는 사람들이 있어요!</h2>
 
-                    { notificationItems && notificationItems.map((data: any, index: number) => (
-                        <p>{data.message}</p>
-                    ))}
+                    <Swiper
+                        spaceBetween={30}
+                        centeredSlides={true}
+                        autoplay={{
+                            delay: 2500,
+                            disableOnInteraction: false
+                        }}
+                        pagination={{
+                            clickable: true
+                        }}
+                        modules={[Autoplay]}
+                        direction={'horizontal'}>
+                        {notificationItems && notificationItems.map((data: any, index) => (
+                            <SwiperSlide key={index}>
+                                <p>{data.message}</p>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
 
                     <h2 className={css`
                         font-family: 'yg-jalnan';
