@@ -3,9 +3,9 @@ import { categoryHeaderItems } from "../../const";
 import { openStore } from "../../entities/state";
 import { useNavigate } from "react-router-dom";
 import { moveScale } from "../../hooks/animation";
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 
 export function Header({ email }: any) {
-
     const { setLoginOpen } = openStore();
     const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ export function Header({ email }: any) {
             scale: 1,
             duration: 0.5,
             ease: "power1.inOut"
-        })
+        });
     }
 
     return (
@@ -74,20 +74,40 @@ export function Header({ email }: any) {
                     justify-content: end;
                     align-items: center;
                 `}>
-                    { categoryHeaderItems.map((data: any, key: number) => (
-                        <p key={key}
-                           className={css`
-                                padding-left: 24px;
-                                font-family: 'yg-jalnan';
-                                cursor: pointer;
-                        `} 
-                        onClick={() => headerItemClick(key)}
-                        onMouseEnter={onMouseEnter}
-                        onMouseLeave={onMouseLeave}>
-                            { key != 4 && data.title != "로그인"
-                                ? data.title : email != null 
-                                ? email : data.title }
-                        </p>
+                    {categoryHeaderItems.map((data: any, key: number) => (
+                        key === 4 && email != null ? (
+                            <Popover key={key} className={css`padding-left: 24px;`}>
+                                <PopoverButton className={css`
+                                    font-family: 'yg-jalnan';
+                                    cursor: pointer;
+                                `}>
+                                    {email}
+                                </PopoverButton>
+                                <PopoverPanel className={css`
+                                    position: absolute;
+                                    z-index: 10;
+                                    background-color: white;
+                                    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                                    border-radius: 8px;
+                                    padding: 16px;
+                                `}>
+                                    <p className={css`cursor: pointer;`}>등록한 관광지 조회</p>
+                                    <p className={css`cursor: pointer;`}>등록한 여행 코스 조회</p>
+                                </PopoverPanel>
+                            </Popover>
+                        ) : (
+                            <p key={key}
+                               className={css`
+                                    padding-left: 24px;
+                                    font-family: 'yg-jalnan';
+                                    cursor: pointer;
+                               `}
+                               onClick={() => headerItemClick(key)}
+                               onMouseEnter={onMouseEnter}
+                               onMouseLeave={onMouseLeave}>
+                                {key !== 4 && data.title !== "로그인" ? data.title : email != null ? email : data.title}
+                            </p>
+                        )
                     ))}
                 </div>
             </div>
