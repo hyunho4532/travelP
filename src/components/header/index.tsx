@@ -84,9 +84,7 @@ export function Header({ email }: any) {
                         onClick={() => headerItemClick(key)}
                         onMouseEnter={onMouseEnter}
                         onMouseLeave={onMouseLeave}>
-                            { key != 4 && data.title != "로그인"
-                                ? data.title : email != null 
-                                ? email : data.title }
+                            { key != 4 ? data.title : email != null ? email : '로그인' }
                         </p>
                     ))}
                 </div>
