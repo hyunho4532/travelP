@@ -9,10 +9,16 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import {  ClipLoader } from 'react-spinners'
 import { TourSpotDialog } from "../components/dialog/TourSpotDialog";
 import { openStore } from "../entities/state";
+import { supabase } from "../config";
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 
 export function TourActivity() {
 
-    const { tourSpotItems, spot, _contentType, setTourSpotItems, setSpot, setContentType, setLocation } = tourSpotStore();
+    const { tourSpotItems, notificationItems, spot, _contentType, setTourSpotItems, setNotificationItems, setSpot, setContentType, setLocation } = tourSpotStore();
     const { tourPictureItems, setPictureItems } = TourPictureStore();
     const { email } = userStore();
     const { tourSpotOpen, setTourSpotOpen } = openStore();
@@ -68,6 +74,18 @@ export function TourActivity() {
     };
 
     useMemo(async () => {
+
+        const response = await supabase.auth.getUser();
+        
+        if (response) {
+            const notifications = await supabase
+                .from('notification')
+                .select()
+                .eq('to', response.data.user?.email);
+
+            setNotificationItems(notifications.data!);
+        }
+
         const baseTourPictureUrl = '/galleryList1?serviceKey=ESun5Z0R0NacQfzLb0UEPB7j8XxI7tACyhwpT80fp%2FpDXspB2JKUjsrZh6DWJmSJvTlL9vKPkbJInjZtVHUXVw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&arrange=A&_type=json';
         const responseTourPicture = await setInterceptors(3).get(baseTourPictureUrl);
         
@@ -90,6 +108,32 @@ export function TourActivity() {
                     height: 520px;
                     margin-top: 32px;
                 `}>
+
+                    <h2 className={css`
+                        font-family: 'yg-jalnan';
+                        text-align: left;
+                        margin-top: 80px;
+                    `}>당신을 응원하는 사람들이 있어요!</h2>
+
+                    <Swiper
+                        spaceBetween={30}
+                        centeredSlides={true}
+                        autoplay={{
+                            delay: 2500,
+                            disableOnInteraction: false
+                        }}
+                        pagination={{
+                            clickable: true
+                        }}
+                        modules={[Autoplay]}
+                        direction={'horizontal'}>
+                        {notificationItems && notificationItems.map((data: any, index) => (
+                            <SwiperSlide key={index}>
+                                <p>{data.message}</p>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+
                     <h2 className={css`
                         font-family: 'yg-jalnan';
                         text-align: left;
@@ -196,7 +240,7 @@ export function TourActivity() {
                             `} onClick={() => tourSpotClick(data.title, data.mapx, data.mapy)}>
                                 <p>{data.title.length >= 13 ? `${data.title.substring(0, 13)}...` : data.title }</p>
                                 <img src={data.firstimage != "" 
-                                            ? data.firstimage : '../src/assets/not_image.png'} loading="lazy" width={180} height={160} />
+                                            ? data.firstimage : 'https://travelp.vercel.app/not_image.png'} loading="lazy" width={180} height={160} />
                             </div>
                         ))}
                     </div>

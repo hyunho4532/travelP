@@ -2,15 +2,17 @@ import { css } from "@emotion/css";
 import { useEffect, useRef } from "react"
 import { login } from "../../const";
 import { supabase } from "../../config";
+import { userStore } from "../../entities/user";
 
 export function LoginDialog({ open }: any) {
 
     const dialogRef = useRef<HTMLDialogElement>(null);
+    const {email} = userStore();
 
     useEffect(() => {
         const dialog = dialogRef.current
 
-        if (open) {
+        if (email === undefined) {
             dialog?.showModal();
         }
 
