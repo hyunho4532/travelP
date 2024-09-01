@@ -2,10 +2,11 @@ import { css } from "@emotion/css";
 import { categoryHeaderItems } from "../../const";
 import { openStore } from "../../entities/state";
 import { useNavigate } from "react-router-dom";
-import { moveScale } from "../../hooks/animation";
+import { onMouseEnter, onMouseLeave } from "../../hooks/animation";
+import { moveRouter } from "../../hooks/router";
+import { UserPopover } from "../popover";
 
 export function Header({ email }: any) {
-
     const { setLoginOpen, setPopoverOpen } = openStore();
     const navigate = useNavigate();
 
@@ -56,6 +57,9 @@ export function Header({ email }: any) {
         })
     }
 
+    const { setLoginOpen } = openStore();
+    const navigate = useNavigate();
+
     return (
         <>  
             <header className={css`
@@ -69,7 +73,6 @@ export function Header({ email }: any) {
                     justify-content: space-between;
                     align-items: center;
                 `}>
-
                     <img className={css`
                         align-items: start;
                     `} src="https://travelp.vercel.app/logo.jpg" width={120} height={120} />
